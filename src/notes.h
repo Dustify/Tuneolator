@@ -1,4 +1,4 @@
-const float notes[] = {
+const double notes[] = {
 	8.1757989156, // 0 C
 	8.661957218, // 0 C#/Db
 	9.1770239974, // 0 D
