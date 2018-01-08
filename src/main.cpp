@@ -2,8 +2,8 @@
 
 HardwareTimer timer(1);
 
-uint tickCount = 0;
-uint halfTicksPerSecond = ticks_per_second * 0.5;
+uint32 tickCount = 0;
+bool ledState = false;
 
 void tick() {
 	if (tickCount == ticks_per_second) {
@@ -11,11 +11,8 @@ void tick() {
 	}
 
 	if (tickCount == 0) {
-		digitalWrite(pin_led, LOW);
-	}
-
-	if (tickCount == halfTicksPerSecond) {
-		digitalWrite(pin_led, HIGH);
+		digitalWrite(pin_led, ledState ? HIGH : LOW);
+		ledState = !ledState;
 	}
 
 	tickCount++;
