@@ -1,17 +1,14 @@
 #include "wavetable.h"
+#include "notes.h"
 
 HardwareTimer timer(1);
 
 uint32 tickCount = 0;
 bool ledState = false;
 
-// temp note stuff here
-double xFreq = notes[62];
-uint32 xTicksPerWave = ticks_per_second / xFreq;
-uint32 xPhasesPerTick = phases / xTicksPerWave;
-uint32 xCurrentTick = 0;
-// temp note stuff end
-
+double ticksPerWave = 0;
+double phasesPerTick = 0;
+uint32 waveTickCount = 0;
 
 void tick() {
 	if (tickCount == ticks_per_second) {
@@ -23,32 +20,30 @@ void tick() {
 		ledState = !ledState;
 	}
 
-	// temp note stuff here
-	if(xCurrentTick == phases) {
-		xCurrentTick = 0;
+	if (waveTickCount > ticksPerWave - 1) {
+		waveTickCount = 0;
 	}
 
-	uint32 xPhase = xCurrentTick * xPhasesPerTick;
-	uint8 xAmplitude = sine[xPhase];
+	uint32 phase = waveTickCount * phasesPerTick;
 
-	GPIOA_BASE->ODR = xAmplitude;
+	GPIOA->regs->ODR = sine[phase];
 
-	// for (int i = 0; i < bits; i++) {
-	// 	digitalWrite(pins[i], ((xAmplitude >> i) & 0x01) == 0 ? LOW : HIGH);
-	// }
-
-	xCurrentTick++;
-	// temp note stuff end
+	waveTickCount++;
 
 	tickCount++;
+}
+
+void playNote(double frequency) {
+	phasesPerTick = 0;
+	waveTickCount = 0;
+	ticksPerWave = ticks_per_second / frequency;
+	phasesPerTick = phases / ticksPerWave;
 }
 
 void setup() {
 	pinMode(pin_led, OUTPUT);
 
-	for (int i = 0; i < bits; i++) {
-		pinMode(pins[i], OUTPUT);
-	}
+	GPIOA->regs->CRL = 0x33333333;
 
 	calculateWavetable();
 
@@ -60,5 +55,13 @@ void setup() {
 }
 
 void loop() {
+	for (int i = 0; i < 128; i++) {
+		playNote(notes[i]);
+		delay(250);
+	}
 
+	for (int i = 126; i > 0; i--) {
+		playNote(notes[i]);
+		delay(250);
+	}
 }
