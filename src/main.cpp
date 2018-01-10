@@ -26,7 +26,7 @@ void tick() {
 
 	uint32 phase = waveTickCount * phasesPerTick;
 
-	GPIOA->regs->ODR = sine[phase];
+	GPIOA->regs->ODR = sawtooth[phase];
 
 	waveTickCount++;
 
@@ -45,7 +45,7 @@ void setup() {
 
 	GPIOA->regs->CRL = 0x33333333;
 
-	calculateWavetable();
+	calculateWavetables();
 
 	timer.pause();
 	timer.setPeriod(1e6 / ticks_per_second);
@@ -64,4 +64,6 @@ void loop() {
 		playNote(notes[i]);
 		delay(250);
 	}
+
+
 }

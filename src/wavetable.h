@@ -2,16 +2,23 @@
 #include "math.h"
 
 byte sine[phases] = {};
+byte sawtooth[phases] = {};
 
-void calculateWavetable() {
-	double halfAmplitudes = 255 / 2;
+void calculateWavetables() {
+	uint16 amplitudes = 255;
+	double halfAmplitudes = amplitudes / 2;
 	double radiansPerPhase = (2 * PI) / phases;
+	double amplitudesPerPhase = (double)amplitudes / (double)phases;
 
 	for (uint32 i = 0; i < phases; i++) {
-		double value = sin(i * radiansPerPhase);
-		value = value * halfAmplitudes;
-		value += halfAmplitudes;
+		// sine
+		double sineValue = sin(i * radiansPerPhase);
+		sineValue = sineValue * halfAmplitudes;
+		sineValue += halfAmplitudes;
 
-		sine[i] = round(value);
+		sine[i] = round(sineValue);
+
+		// sawtooth
+		sawtooth[i] = round(i * amplitudesPerPhase);
 	}
 }
