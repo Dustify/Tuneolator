@@ -1,5 +1,5 @@
 #include "wavetable.h"
-#include "notes.h"
+#include "note.h"
 
 HardwareTimer timer(1);
 
@@ -12,6 +12,11 @@ uint32 waveTickCount = 0;
 
 bool squareEnabled = false;
 byte *wavetable[voices] = {};
+
+byte *lfoWavetable = NULL;
+double lfoTicksPerWave = ticks_per_second / lfoFrequency;
+double lfoPhasesPerTick = phases / lfoTicksPerWave;
+uint32 lfoWaveTickCount = 0;
 
 void tick() {
 	if (tickCount == ticks_per_second) {
@@ -31,7 +36,7 @@ void tick() {
 
 	uint32 result = 0;
 
-	for (int i = 0; i < voices; i ++) {
+	for (int i = 0; i < voices; i++) {
 		byte *voice = wavetable[i];
 
 		if (voice != NULL) {
@@ -43,12 +48,23 @@ void tick() {
 		result += 255;
 	}
 
-	// compression here?
+	// lfo
+	if (lfoWaveTickCount == lfoTicksPerWave) {
+		lfoWaveTickCount = 0;
+	}
+
+	if (lfoWavetable != NULL) {
+		uint32 lfoPhase = lfoPhasesPerTick * lfoWaveTickCount;
+
+		result += lfoWavetable[lfoPhase ];
+	}
+
+	result = result > 255 ? 255 : result;
 
 	GPIOA->regs->ODR = result;
 
+	lfoWaveTickCount++;
 	waveTickCount++;
-
 	tickCount++;
 }
 
@@ -176,39 +192,43 @@ void numan() {
 void cycleTunes() {
 	vangelis();
 	pause(8);
-	// numan();
-	// pause(8);
+	numan();
+	pause(8);
 }
 
 void loop() {
-	// wavetable[0] = sine;
-	// wavetable[1] = NULL;
-	// wavetable[2] = NULL;
-	// squareEnabled = false;
-	// cycleTunes();
-  //
-	// wavetable[0] = NULL;
-	// wavetable[1] = NULL;
-	// wavetable[2] = NULL;
-	// squareEnabled = true;
-	// cycleTunes();
-  //
-	// wavetable[0] = triangle;
-	// wavetable[1] = NULL;
-	// wavetable[2] = NULL;
-	// squareEnabled = false;
-	// cycleTunes();
-  //
-	// wavetable[0] = sawtooth;
-	// wavetable[1] = NULL;
-	// wavetable[2] = NULL;
-	// squareEnabled = false;
-	// cycleTunes();
+	lfoWavetable = sine;
+	wavetable[0] = sine;
+	wavetable[1] = NULL;
+	wavetable[2] = NULL;
+	squareEnabled = false;
+	cycleTunes();
 
+	lfoWavetable = NULL;
+	wavetable[0] = NULL;
+	wavetable[1] = NULL;
+	wavetable[2] = NULL;
+	squareEnabled = true;
+	cycleTunes();
+
+	lfoWavetable = NULL;
+	wavetable[0] = triangle;
+	wavetable[1] = NULL;
+	wavetable[2] = NULL;
+	squareEnabled = false;
+	cycleTunes();
+
+	lfoWavetable = sine;
+	wavetable[0] = sawtooth;
+	wavetable[1] = NULL;
+	wavetable[2] = NULL;
+	squareEnabled = false;
+	cycleTunes();
+
+	lfoWavetable = sine;
 	wavetable[0] = sine;
 	wavetable[1] = sawtooth;
 	wavetable[2] = triangle;
 	squareEnabled = true;
-	// cycleTunes();
-	cycleNotes();
+	cycleTunes();
 }

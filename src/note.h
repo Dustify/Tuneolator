@@ -1,3 +1,9 @@
+class Note{
+private:
+public:
+	Note(double frequency);
+};
+
 const double notes[] = {
 	8.1757989156, // 0 C - 0
 	8.661957218, // 0 C#/Db - 1
