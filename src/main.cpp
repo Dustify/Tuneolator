@@ -10,7 +10,8 @@ double ticksPerWave = 0;
 double phasesPerTick = 0;
 uint32 waveTickCount = 0;
 
-byte *wavetable = sine;
+bool squareEnabled = false;
+byte *wavetable[voices] = {};
 
 void tick() {
 	if (tickCount == ticks_per_second) {
@@ -28,7 +29,23 @@ void tick() {
 
 	uint32 phase = waveTickCount * phasesPerTick;
 
-	GPIOA->regs->ODR = wavetable[phase];
+	uint32 result = 0;
+
+	for (int i = 0; i < voices; i ++) {
+		byte *voice = wavetable[i];
+
+		if (voice != NULL) {
+			result += voice[phase];
+		}
+	}
+
+	if (squareEnabled && waveTickCount < ticksPerWave * 0.5) {
+		result += 255;
+	}
+
+	// compression here?
+
+	GPIOA->regs->ODR = result;
 
 	waveTickCount++;
 
@@ -159,14 +176,39 @@ void numan() {
 void cycleTunes() {
 	vangelis();
 	pause(8);
-	numan();
-	pause(8);
+	// numan();
+	// pause(8);
 }
 
 void loop() {
-	wavetable = sine;
-	cycleTunes();
+	// wavetable[0] = sine;
+	// wavetable[1] = NULL;
+	// wavetable[2] = NULL;
+	// squareEnabled = false;
+	// cycleTunes();
+  //
+	// wavetable[0] = NULL;
+	// wavetable[1] = NULL;
+	// wavetable[2] = NULL;
+	// squareEnabled = true;
+	// cycleTunes();
+  //
+	// wavetable[0] = triangle;
+	// wavetable[1] = NULL;
+	// wavetable[2] = NULL;
+	// squareEnabled = false;
+	// cycleTunes();
+  //
+	// wavetable[0] = sawtooth;
+	// wavetable[1] = NULL;
+	// wavetable[2] = NULL;
+	// squareEnabled = false;
+	// cycleTunes();
 
-	wavetable = sawtooth;
-	cycleTunes();
+	wavetable[0] = sine;
+	wavetable[1] = sawtooth;
+	wavetable[2] = triangle;
+	squareEnabled = true;
+	// cycleTunes();
+	cycleNotes();
 }
