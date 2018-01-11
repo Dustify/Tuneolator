@@ -16,20 +16,13 @@ void tick() {
 
 	int16 result = 0;
 
-	for (uint8 i = 0; i < polyphony; i++) {
-		uint8 activeNote = Control::activeNotes[i];
-
-		if (activeNote == -1) {
-			continue;
-		}
-
-		int16 phase = Notes::notes[activeNote].tick();
-
+	if (Control::activeNote != -1) {
+		int16 phase = Notes::notes[Control::activeNote].tick();
 		result += wavetable[phase];
 	}
 
 	// TODO: performance :(
-	//result += Lfo::tick();
+	result += Lfo::tick();
 
 	result += Wavetable::halfAmplitudes;
 
@@ -45,7 +38,6 @@ void setup() {
 	Notes::init();
 	Wavetable::init();
 	Led::init();
-	Control::init();
 
 	timer.pause();
 	timer.setPeriod(1e6 / ticks_per_second);
@@ -55,9 +47,12 @@ void setup() {
 }
 
 void loop() {
-	wavetable = Wavetable::sine;
+	//Lfo::setWavetable(Wavetable::sine);
+	wavetable = Wavetable::sawtooth;
 
 	//Control::playNote(60, 0);
 
 	//Demo::cycleNotes();
+
+	Demo::cycleTunes();
 }
