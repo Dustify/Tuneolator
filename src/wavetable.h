@@ -1,36 +1,46 @@
+#include <Arduino.h>
 #include "config.h"
-#include "math.h"
 
-byte sine[phases] = {};
-byte sawtooth[phases] = {};
-byte triangle[phases] = {};
+class Wavetable {
+public:
+	static int8 sine[phases];
+	static int8 sawtooth[phases];
+	static int8 triangle[phases];
 
-void calculateWavetables() {
-	uint16 amplitudes = 255;
-	double halfAmplitudes = amplitudes / 2;
-	double radiansPerPhase = (2 * PI) / phases;
-	double amplitudesPerPhase = (double)amplitudes / (double)phases;
+	static uint16 amplitudes;
+	static double halfAmplitudes;
 
-	uint32 halfPhases = round(phases * 0.5);
+	static void init() {
+		double radiansPerPhase = (2 * PI) / phases;
+		double amplitudesPerPhase = (double)amplitudes / (double)phases;
 
-	double amplitudesPerHalfPhase = amplitudes / halfPhases;
+		uint32 halfPhases = round(phases * 0.5);
 
-	for (uint32 i = 0; i < phases; i++) {
-		// sine
-		double sineValue = sin(i * radiansPerPhase);
-		sineValue = sineValue * halfAmplitudes;
-		sineValue += halfAmplitudes;
+		double amplitudesPerHalfPhase = amplitudes / halfPhases;
 
-		sine[i] = round(sineValue);
+		for (uint32 i = 0; i < phases; i++) {
+			// sine
+			double sineValue = sin(i * radiansPerPhase);
+			sineValue = sineValue * halfAmplitudes;
 
-		// sawtooth
-		sawtooth[i] = round(i * amplitudesPerPhase);
+			sine[i] = round(sineValue);
 
-		// triangle
-		if (i < halfPhases) {
-			triangle[i] = round(i * amplitudesPerHalfPhase);
-		} else {
-			triangle[i] = round(amplitudes - ((i - halfPhases) * amplitudesPerHalfPhase));
+			// sawtooth
+			sawtooth[i] = round(i * amplitudesPerPhase - halfAmplitudes);
+
+			// triangle
+			if (i < halfPhases) {
+				triangle[i] = round(i * amplitudesPerHalfPhase - halfAmplitudes);
+			} else {
+				triangle[i] = round(amplitudes - ((i - halfPhases) * amplitudesPerHalfPhase) - halfAmplitudes);
+			}
 		}
 	}
-}
+};
+
+int8 Wavetable::sine[phases] = {};
+int8 Wavetable::sawtooth[phases] = {};
+int8 Wavetable::triangle[phases] = {};
+
+uint16 Wavetable::amplitudes = 255;
+double Wavetable::halfAmplitudes = amplitudes / 2;
