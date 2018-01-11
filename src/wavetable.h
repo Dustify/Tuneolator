@@ -1,3 +1,6 @@
+#ifndef WAVETABLE_H
+#define WAVETABLE_H
+
 #include <Arduino.h>
 #include "config.h"
 
@@ -44,3 +47,5 @@ int8 Wavetable::triangle[phases] = {};
 
 uint16 Wavetable::amplitudes = 255;
 double Wavetable::halfAmplitudes = amplitudes / 2;
+
+#endif

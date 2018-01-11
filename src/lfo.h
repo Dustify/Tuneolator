@@ -1,38 +1,31 @@
 #include <Arduino.h>
+#include "note.h"
 #include "config.h"
 
-// TODO: as this is just like playing a note, could we get away with treating it as such?
-// TODO: refactor 'factor' config so it is passed in init / var
+// TODO: refactor config so it is passed in init or changed as var?
 class Lfo {
 public:
-static double ticksPerWave;
-static double phasesPerTick;
-static uint32 tickCount;
-static int8 *wavetable;
+	static int8* wavetable;
+	static Note note;
 
-static void setWavetable(int8 *value) {
-	wavetable = value;
-}
-
-static int16 tick() {
-	if (wavetable == NULL) {
-		return 0;
+	static void init() {
+		note.init(lfoFrequency);
 	}
 
-	if (tickCount == ticksPerWave) {
-		tickCount = 0;
+	static void setWavetable(int8* value) {
+		wavetable = value;
 	}
 
-	uint32 phase = phasesPerTick * tickCount;
-	uint16 result = wavetable[phase] * lfoFactor;
+	static uint16 tick() {
+		if (wavetable == NULL) {
+			return 0;
+		}
 
-	tickCount++;
+		uint16 phase = note.tick();
 
-	return result;
-}
+		return wavetable[phase] * lfoFactor;
+	}
 };
 
+Note Lfo::note;
 int8* Lfo::wavetable = NULL;
-double Lfo::ticksPerWave = ticks_per_second / lfoFrequency;
-double Lfo::phasesPerTick = phases / ticksPerWave;
-uint32 Lfo::tickCount  = 0;

@@ -2,8 +2,6 @@
 #include "note.h"
 
 void Note::init(double frequency) {
-  Note::frequency = frequency;
-
   ticks = ticks_per_second / frequency;
   phasesPerTick = phases / ticks;
 }

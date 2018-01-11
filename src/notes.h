@@ -7,7 +7,7 @@
 class Notes {
 private:
 public:
-  static Note* notes;
+  static Note notes[128];
   static void init() {
     for(uint8 i = 0; i < 128; i++) {
       notes[i].init(frequencies[i]);
@@ -15,6 +15,6 @@ public:
   }
 };
 
-Note* Notes::notes = new Note[128];
+Note Notes::notes[128];
 
 #endif
