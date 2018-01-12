@@ -25,10 +25,9 @@ void setup() {
 
 void loop() {
 //Lfo::setWavetable(Wavetable::sine);
-Wavetable::setSplit(50);
-Wavetable::setLow(Wavetable::sine);
-Wavetable::setHigh(Wavetable::sawtooth);
-Demo::axel();
+Wavetable::setSplit(0);
+Wavetable::setHigh(Wavetable::triangle);
+Demo::mario();
 
 while(1);
 

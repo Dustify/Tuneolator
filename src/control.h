@@ -65,8 +65,8 @@ static void tick() {
 
 	result += Wavetable::halfAmplitudes;
 
-	result = result > 255 ? 255 : result;
-	result = result < 0 ? 0 : result;
+	// result = result > 255 ? 255 : result;
+	// result = result < 0 ? 0 : result;
 
 	GPIOA->regs->ODR = result;
 }
