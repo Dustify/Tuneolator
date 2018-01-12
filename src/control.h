@@ -60,7 +60,8 @@ static void tick() {
 	result += Lfo::tick();
 
 	// TODO: implement this more better
-	result = result / activeNoteCount;
+//	result = result / activeNoteCount;
+	result = result / 5;
 
 	result += Wavetable::halfAmplitudes;
 

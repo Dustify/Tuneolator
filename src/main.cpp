@@ -24,7 +24,10 @@ void setup() {
 }
 
 void loop() {
-Wavetable::set(Wavetable::sawtooth);
+//Lfo::setWavetable(Wavetable::sine);
+Wavetable::setSplit(50);
+Wavetable::setLow(Wavetable::sine);
+Wavetable::setHigh(Wavetable::sawtooth);
 Demo::axel();
 
 while(1);

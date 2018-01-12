@@ -32,7 +32,7 @@ public:
 
   int16 tick() {
     uint16 phase = Notes::notes[note].tick();
-    int16 amplitude = Wavetable::current[phase];
+    int16 amplitude = note < Wavetable::split ? Wavetable::currentLow[phase] :Wavetable::currentHigh[phase];
 
     // TODO: apply adsr here
 
