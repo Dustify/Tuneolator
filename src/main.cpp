@@ -24,30 +24,8 @@ void setup() {
 }
 
 void loop() {
-	//Lfo::setWavetable(Wavetable::sine);
+	Lfo::setWavetable(Wavetable::sine);
 	Control::setWavetable(Wavetable::sine);
 
-	Control::playNote(60);
-	Control::playNote(64);
-	Control::playNote(67);
-	//Control::playNote(72);
-	//Control::playNote(76);
-
-	while(1);
-	// delay(1000);
-	// Control::playNote(64);
-	// delay(1000);
-	// Control::playNote(67);
-	// delay(1000);
-  //
-	// Control::stopNote(67);
-	// delay(1000);
-	// Control::stopNote(64);
-	// delay(1000);
-	// Control::stopNote(60);
-	// delay(1000);
-
-	//Demo::cycleNotes();
-
-	//Demo::cycleTunes();
+	Demo::cycleTunes();
 }
