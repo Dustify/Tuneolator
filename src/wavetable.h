@@ -32,10 +32,12 @@ public:
 			sawtooth[i] = round(i * amplitudesPerPhase - halfAmplitudes);
 
 			// triangle
+			float triangleAmplitude = i * amplitudesPerHalfPhase - halfAmplitudes;
+
 			if (i < halfPhases) {
-				triangle[i] = round(i * amplitudesPerHalfPhase - halfAmplitudes);
+				triangle[i] = round(triangleAmplitude);
 			} else {
-				triangle[i] = round(amplitudes - ((i - halfPhases) * amplitudesPerHalfPhase) - halfAmplitudes);
+				triangle[i] = round(amplitudes - triangleAmplitude);
 			}
 		}
 	}

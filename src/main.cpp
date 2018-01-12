@@ -24,7 +24,20 @@ void setup() {
 }
 
 void loop() {
+	// TODO: fix lfo
 	//Lfo::setWavetable(Wavetable::sine);
+
+	Control::setWavetable(Wavetable::sine);
+	Control::playNote(60);
+	delay(2500);
+
+	Control::setWavetable(Wavetable::sawtooth);
+	delay(2500);
+
+	Control::setWavetable(Wavetable::triangle);
+	delay(2500);
+	Control::stopNote(60);
+
 	Control::setWavetable(Wavetable::sawtooth);
 
 	while (1) {
