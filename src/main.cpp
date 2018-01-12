@@ -24,24 +24,29 @@ void setup() {
 }
 
 void loop() {
-	Lfo::setWavetable(Wavetable::sawtooth);
+Wavetable::set(Wavetable::sawtooth);
+Demo::axel();
 
-	Wavetable::set(Wavetable::sine);
-	Control::playNote(60);
-	delay(2500);
+while(1);
 
-	Wavetable::set(Wavetable::sawtooth);
-	delay(2500);
-
-	Wavetable::set(Wavetable::triangle);
-	delay(2500);
-	Control::stopNote(60);
-
-	Wavetable::set(Wavetable::sawtooth);
-
-	while (1) {
-		for (uint8 i = 0; i < 12; i++) {
-			Demo::chords(36 + i);
-		}
-	}
+	// Lfo::setWavetable(Wavetable::sawtooth);
+  //
+	// Wavetable::set(Wavetable::sine);
+	// Control::playNote(60);
+	// delay(2500);
+  //
+	// Wavetable::set(Wavetable::sawtooth);
+	// delay(2500);
+  //
+	// Wavetable::set(Wavetable::triangle);
+	// delay(2500);
+	// Control::stopNote(60);
+  //
+	// Wavetable::set(Wavetable::sawtooth);
+  //
+	// while (1) {
+	// 	for (uint8 i = 0; i < 12; i++) {
+	// 		Demo::chords(36 + i);
+	// 	}
+	// }
 }

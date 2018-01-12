@@ -19,13 +19,17 @@ static void stopNote(uint8 note) {
 	}
 }
 
-static void playNote(uint8 note) {
+static void playNote(uint8 note, uint8 velocity) {
 	for (uint8 i = 0; i < polyphony; i++) {
 		if (!activeNotes[i].active) {
-			activeNotes[i].start(note);
+			activeNotes[i].start(note, velocity);
 			return;
 		}
 	}
+}
+
+static void playNote(uint8 note) {
+	playNote(note, 127);
 }
 
 static void init() {
