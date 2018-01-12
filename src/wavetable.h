@@ -11,19 +11,19 @@ public:
 	static int8 triangle[phases];
 
 	static uint16 amplitudes;
-	static double halfAmplitudes;
+	static float halfAmplitudes;
 
 	static void init() {
-		double radiansPerPhase = (2 * PI) / phases;
-		double amplitudesPerPhase = (double)amplitudes / (double)phases;
+		float radiansPerPhase = (2 * PI) / phases;
+		float amplitudesPerPhase = (float)amplitudes / (float)phases;
 
-		uint32 halfPhases = round(phases * 0.5);
+		uint16 halfPhases = round(phases * 0.5);
 
-		double amplitudesPerHalfPhase = amplitudes / halfPhases;
+		float amplitudesPerHalfPhase = amplitudes / halfPhases;
 
-		for (uint32 i = 0; i < phases; i++) {
+		for (uint16 i = 0; i < phases; i++) {
 			// sine
-			double sineValue = sin(i * radiansPerPhase);
+			float sineValue = sin(i * radiansPerPhase);
 			sineValue = sineValue * halfAmplitudes;
 
 			sine[i] = round(sineValue);
@@ -46,6 +46,6 @@ int8 Wavetable::sawtooth[phases] = {};
 int8 Wavetable::triangle[phases] = {};
 
 uint16 Wavetable::amplitudes = 255;
-double Wavetable::halfAmplitudes = amplitudes / 2;
+float Wavetable::halfAmplitudes = amplitudes / 2;
 
 #endif

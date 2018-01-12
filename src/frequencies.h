@@ -1,4 +1,4 @@
-const double frequencies[] = {
+const float frequencies[] = {
 	8.1757989156,     // 0 C - 0
 	8.661957218,     // 0 C#/Db - 1
 	9.1770239974,     // 0 D - 2

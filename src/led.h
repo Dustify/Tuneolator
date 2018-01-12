@@ -5,7 +5,7 @@
 // TODO: look into making vars private static
 class Led {
 public:
-static uint32 tickCount;
+static uint16 tickCount;
 static bool state;
 
 static void init() {
@@ -25,5 +25,5 @@ static void tick() {
 }
 };
 
-uint32 Led::tickCount = 0;
+uint16 Led::tickCount = 0;
 bool Led::state = false;

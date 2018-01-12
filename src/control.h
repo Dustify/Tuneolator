@@ -9,28 +9,32 @@
 
 class Control {
 public:
-volatile static int8 activeNote;
+volatile static int8 activeNotes[polyphony];
 volatile static int8* wavetable;
 
-static void pause(double duration) {
-	delay(250 * duration);
+static void stopNote(uint8 note) {
+	for (uint8 i = 0; i < polyphony; i++) {
+		if (activeNotes[i] == note) {
+			activeNotes[i] = -1;
+		}
+	}
 }
 
-static void stopNote() {
-	activeNote = -1;
-}
-
-static void playNote(uint8 note, double duration) {
-	activeNote = note;
-
-	if (duration > 0) {
-		pause(duration);
-		stopNote();
+static void playNote(uint8 note) {
+	for (uint8 i = 0; i < polyphony; i++) {
+		if (activeNotes[i] == -1) {
+			activeNotes[i] = note;
+			return;
+		}
 	}
 }
 
 static void init() {
 	GPIOA->regs->CRL = 0x33333333;
+
+	for (uint8 i = 0; i < polyphony; i++) {
+		activeNotes[i] = -1;
+	}
 
 	Lfo::init();
 	Notes::init();
@@ -44,9 +48,13 @@ static void setWavetable(int8* value) {
 static void tick() {
 	int16 result = 0;
 
-	if (Control::activeNote != -1) {
-		int16 phase = Notes::notes[Control::activeNote].tick();
-		result += wavetable[phase];
+	for (uint8 i = 0; i < polyphony; i++) {
+		int8 activeNote = activeNotes[i];
+
+		if (activeNote != -1) {
+			int16 phase = Notes::notes[activeNote].tick();
+			result += wavetable[phase];
+		}
 	}
 
 	result += Lfo::tick();
@@ -60,7 +68,7 @@ static void tick() {
 }
 };
 
-volatile int8 Control::activeNote = -1;
+volatile int8 Control::activeNotes[polyphony];
 volatile int8* Control::wavetable = NULL;
 
 #endif

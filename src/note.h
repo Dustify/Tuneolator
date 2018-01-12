@@ -6,11 +6,11 @@
 
 class Note {
 public:
-void init(double frequency);
+void init(float frequency);
 int16 tick();
-double ticks;
-double phasesPerTick;
-uint32 tickCount;
+uint16 ticks;
+float phasesPerTick;
+uint16 tickCount;
 };
 
 #endif

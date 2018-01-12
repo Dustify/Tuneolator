@@ -1,9 +1,11 @@
 #include "config.h"
 #include "note.h"
 
-void Note::init(double frequency) {
-  ticks = ticks_per_second / frequency;
-  phasesPerTick = phases / ticks;
+void Note::init(float frequency) {
+  float fTicks = ticks_per_second / frequency;
+
+  ticks = round(fTicks);
+  phasesPerTick = phases / fTicks;
 }
 
 int16 Note::tick() {
