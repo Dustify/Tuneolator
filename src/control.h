@@ -63,10 +63,10 @@ static void tick() {
 
 	result += Lfo::tick();
 
+	// TODO: implement this more better
 	result = result / activeNoteCount;
 
 	result += Wavetable::halfAmplitudes;
-
 
 	result = result > 255 ? 255 : result;
 	result = result < 0 ? 0 : result;

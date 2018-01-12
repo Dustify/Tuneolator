@@ -24,8 +24,7 @@ void setup() {
 }
 
 void loop() {
-	// TODO: fix lfo
-	//Lfo::setWavetable(Wavetable::sine);
+	Lfo::setWavetable(Wavetable::sine);
 
 	Control::setWavetable(Wavetable::sine);
 	Control::playNote(60);

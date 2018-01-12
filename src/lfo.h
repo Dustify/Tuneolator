@@ -5,27 +5,41 @@
 // TODO: refactor config so it is passed in init or changed as var?
 class Lfo {
 public:
-	static int8* wavetable;
-	static Note note;
+static int8* wavetable;
+static uint16 tickCount;
+static uint16 ticks;
+static float phasesPerTick;
 
-	static void init() {
-		note.init(lfoFrequency);
+static void init() {
+	float fTicks = ticks_per_second / lfoFrequency;
+	ticks = round(fTicks);
+
+	phasesPerTick = phases / fTicks;
+}
+
+static void setWavetable(int8* value) {
+	wavetable = value;
+}
+
+static uint16 tick() {
+	if (wavetable == NULL) {
+		return 0;
 	}
 
-	static void setWavetable(int8* value) {
-		wavetable = value;
+	if (tickCount >= ticks) {
+		tickCount = 0;
 	}
 
-	static uint16 tick() {
-		if (wavetable == NULL) {
-			return 0;
-		}
+	uint16 phase = round(tickCount * phasesPerTick);
+	int16 result =  wavetable[phase] * lfoFactor;
 
-		uint16 phase = note.tick();
+	tickCount++;
 
-		return wavetable[phase] * lfoFactor;
-	}
+	return result;
+}
 };
 
-Note Lfo::note;
-int8* Lfo::wavetable = NULL;
+int8* Lfo::wavetable;
+uint16 Lfo::tickCount;
+uint16 Lfo::ticks;
+float Lfo::phasesPerTick;
