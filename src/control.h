@@ -49,18 +49,24 @@ static void setWavetable(int8* value) {
 static void tick() {
 	int16 result = 0;
 
+	uint8 activeNoteCount = 0;
+
 	for (uint8 i = 0; i < polyphony; i++) {
 		int8 activeNote = activeNotes[i];
 
 		if (activeNote != -1) {
 			int16 phase = Notes::notes[activeNote].tick();
 			result += wavetable[phase];
+			activeNoteCount++;
 		}
 	}
 
 	result += Lfo::tick();
 
+	result = result / activeNoteCount;
+
 	result += Wavetable::halfAmplitudes;
+
 
 	result = result > 255 ? 255 : result;
 	result = result < 0 ? 0 : result;
