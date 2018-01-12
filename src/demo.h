@@ -14,6 +14,22 @@ private:
   }
 
 public:
+static void chords(uint8 root) {
+  Control::playNote(root);
+	Control::playNote(root + 7);
+
+  Control::playNote(root + 3);
+  delay(2000);
+
+  Control::stopNote(root + 3);
+  Control::playNote(root + 4);
+  delay(2000);
+  Control::stopNote(root + 4);
+
+  Control::stopNote(root);
+  Control::stopNote(root + 7);
+}
+
 static void cycleNotes() {
 	for (int i = 0; i < 128; i++) {
 		playNote(i, 1);
