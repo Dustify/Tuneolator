@@ -9,7 +9,7 @@ public:
 void init(float frequency);
 int16 tick();
 uint16 ticks;
-float phasesPerTick;
+uint16 phasesPerTick;
 uint16 tickCount;
 };
 

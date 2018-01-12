@@ -24,8 +24,24 @@ void setup() {
 }
 
 void loop() {
-	Lfo::setWavetable(Wavetable::sine);
+	//Lfo::setWavetable(Wavetable::sine);
 	Control::setWavetable(Wavetable::sine);
 
-	Demo::cycleTunes();
+	//Demo::cycleTunes();
+
+	Control::playNote(36);
+	Control::playNote(40);
+	Control::playNote(43);
+
+	Control::playNote(48);
+	Control::playNote(52);
+	Control::playNote(55);
+
+	Control::playNote(60);
+	Control::playNote(64);
+	Control::playNote(67);
+
+	Control::playNote(72);
+
+	while(1);
 }

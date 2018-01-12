@@ -5,7 +5,7 @@ void Note::init(float frequency) {
   float fTicks = ticks_per_second / frequency;
 
   ticks = round(fTicks);
-  phasesPerTick = phases / fTicks;
+  phasesPerTick = round(phases / fTicks);
 }
 
 int16 Note::tick() {
