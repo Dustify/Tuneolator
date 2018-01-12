@@ -30,6 +30,7 @@ static void playNote(uint8 note) {
 }
 
 static void init() {
+	// TODO: configurable
 	GPIOA->regs->CRL = 0x33333333;
 
 	for (uint8 i = 0; i < polyphony; i++) {

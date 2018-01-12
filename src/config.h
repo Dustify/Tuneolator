@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 const uint32 ticks_per_second = 48e3;
-const uint16 phases = 4e3;
+const uint16 phases = 5e3;
 
 const float lfoFrequency = 5;
 const float lfoFactor = 0.5;
