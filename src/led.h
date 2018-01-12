@@ -12,15 +12,18 @@ static uint16 tickCount;
 static bool state;
 
 static bool indicatorState;
+static uint16 indicatorTickCountStart;
 static uint16 indicatorTickCount;
 
 static void init() {
 	GPIOB->regs->CRH = 0x000030;
 	GPIOC->regs->CRH = 0x300000;
+
+	indicatorTickCountStart = ticks_per_second * 0.1;
 }
 
 static void indicate() {
-	indicatorTickCount = ticks_per_second * 0.1;
+	indicatorTickCount = indicatorTickCountStart;
 	GPIOB->regs->BSRR = (1<<9);
 	indicatorState = true;
 }
@@ -53,6 +56,7 @@ uint16 Led::tickCount = 0;
 bool Led::state = false;
 
 bool Led::indicatorState;
+uint16 Led::indicatorTickCountStart;
 uint16 Led::indicatorTickCount;
 
 #endif
