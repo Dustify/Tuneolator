@@ -3,27 +3,26 @@
 
 #include <Arduino.h>
 #include "config.h"
-#include "notes.h"
 #include "lfo.h"
 #include "wavetable.h"
+#include "activeNote.h"
 
 class Control {
 public:
-volatile static int8 activeNotes[polyphony];
-volatile static int8* wavetable;
+static ActiveNote activeNotes[polyphony];
 
 static void stopNote(uint8 note) {
 	for (uint8 i = 0; i < polyphony; i++) {
-		if (activeNotes[i] == note) {
-			activeNotes[i] = -1;
+		if (activeNotes[i].active && activeNotes[i].note == note) {
+			activeNotes[i].stop();
 		}
 	}
 }
 
 static void playNote(uint8 note) {
 	for (uint8 i = 0; i < polyphony; i++) {
-		if (activeNotes[i] == -1) {
-			activeNotes[i] = note;
+		if (!activeNotes[i].active) {
+			activeNotes[i].start(note);
 			return;
 		}
 	}
@@ -34,16 +33,12 @@ static void init() {
 	GPIOA->regs->CRL = 0x33333333;
 
 	for (uint8 i = 0; i < polyphony; i++) {
-		activeNotes[i] = -1;
+		activeNotes[i].init();
 	}
 
 	Lfo::init();
 	Notes::init();
 	Wavetable::init();
-}
-
-static void setWavetable(int8* value) {
-	wavetable = value;
 }
 
 static void tick() {
@@ -52,11 +47,8 @@ static void tick() {
 	uint8 activeNoteCount = 0;
 
 	for (uint8 i = 0; i < polyphony; i++) {
-		int8 activeNote = activeNotes[i];
-
-		if (activeNote != -1) {
-			int16 phase = Notes::notes[activeNote].tick();
-			result += wavetable[phase];
+		if (activeNotes[i].active) {
+			result += activeNotes[i].tick();
 			activeNoteCount++;
 		}
 	}
@@ -75,7 +67,6 @@ static void tick() {
 }
 };
 
-volatile int8 Control::activeNotes[polyphony];
-volatile int8* Control::wavetable = NULL;
+ActiveNote Control::activeNotes[polyphony];
 
 #endif

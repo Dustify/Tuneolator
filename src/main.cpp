@@ -24,20 +24,20 @@ void setup() {
 }
 
 void loop() {
-	Lfo::setWavetable(Wavetable::sine);
+	Lfo::setWavetable(Wavetable::sawtooth);
 
-	Control::setWavetable(Wavetable::sine);
+	Wavetable::set(Wavetable::sine);
 	Control::playNote(60);
 	delay(2500);
 
-	Control::setWavetable(Wavetable::sawtooth);
+	Wavetable::set(Wavetable::sawtooth);
 	delay(2500);
 
-	Control::setWavetable(Wavetable::triangle);
+	Wavetable::set(Wavetable::triangle);
 	delay(2500);
 	Control::stopNote(60);
 
-	Control::setWavetable(Wavetable::sawtooth);
+	Wavetable::set(Wavetable::sawtooth);
 
 	while (1) {
 		for (uint8 i = 0; i < 12; i++) {

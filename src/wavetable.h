@@ -10,6 +10,8 @@ public:
 	static int8 sawtooth[phases];
 	static int8 triangle[phases];
 
+	static int8* current;
+
 	static uint16 amplitudes;
 	static float halfAmplitudes;
 
@@ -41,11 +43,17 @@ public:
 			}
 		}
 	}
+
+	static void set(int8* value) {
+		current = value; 
+	}
 };
 
 int8 Wavetable::sine[phases] = {};
 int8 Wavetable::sawtooth[phases] = {};
 int8 Wavetable::triangle[phases] = {};
+
+int8* Wavetable::current;
 
 uint16 Wavetable::amplitudes = 255;
 float Wavetable::halfAmplitudes = amplitudes / 2;
