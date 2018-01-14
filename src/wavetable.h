@@ -52,12 +52,32 @@ static void init() {
 	}
 }
 
-static void setLow(int8* value) {
-	currentLow = value;
+static void setLow(uint8 value) {
+	if (value < 43) {
+		currentLow = Wavetable::sine;
+		return;
+	}
+
+	if (value < 86) {
+		currentLow = Wavetable::sawtooth;
+		return;
+	}
+
+	Wavetable::currentLow = Wavetable::triangle;
 }
 
-static void setHigh(int8* value) {
-	currentHigh = value;
+static void setHigh(uint8 value) {
+	if (value < 43) {
+		currentHigh = Wavetable::sine;
+		return;
+	}
+
+	if (value < 86) {
+		currentHigh = Wavetable::sawtooth;
+		return;
+	}
+
+	Wavetable::currentHigh = Wavetable::triangle;
 }
 
 static void setSplit(uint8 value) {

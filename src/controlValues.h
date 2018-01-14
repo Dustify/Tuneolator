@@ -34,39 +34,19 @@ static void set(uint8 id, uint8 value) {
 
 	// set low wavetable
 	if (id == controlLowWavetable) {
-		if (value < 43) {
-			Wavetable::currentLow = Wavetable::sine;
-			return;
-		}
-
-		if (value < 86) {
-			Wavetable::currentLow = Wavetable::sawtooth;
-			return;
-		}
-
-		Wavetable::currentLow = Wavetable::triangle;
+		Wavetable::setLow(value);
 		return;
 	}
 
 	// set split
 	if (id == controlSplit) {
-		Wavetable::split = value;
+		Wavetable::setSplit(value);
 		return;
 	}
 
 	// set high wavetable
 	if (id == controlHighWavetable) {
-		if (value < 43) {
-			Wavetable::currentHigh = Wavetable::sine;
-			return;
-		}
-
-		if (value < 86) {
-			Wavetable::currentHigh = Wavetable::sawtooth;
-			return;
-		}
-
-		Wavetable::currentHigh = Wavetable::triangle;
+		Wavetable::setHigh(value);
 		return;
 	}
 }
