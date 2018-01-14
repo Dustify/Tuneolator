@@ -10,7 +10,6 @@ DAC provided by 8-bit R-2R ladder on GPIO port A pins 0-7.
 - [x] Triangle wave
 - [x] Sawtooth wave
 - [x] Velocity
-- [x] LFO
 - [x] LED heartbeat
 - [x] Mario & Axel F demos
 - [x] LFO (performance issues with high polyphony)
