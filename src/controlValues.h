@@ -9,6 +9,7 @@ class ControlValues {
 public:
 
 static void set(uint8 id, uint8 value) {
+	// set release
 	if (id == controlRelease) {
 		ActiveNote::setRelease(value);
 		return;

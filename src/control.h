@@ -29,7 +29,8 @@ static void playNote(uint8 note, uint8 velocity) {
 
 	for (uint8 i = 0; i < polyphony; i++) {
 		if (activeNotes[i].active && activeNotes[i].note == note) {
-			return;
+			nextAvailable = i;
+			break;
 		}
 
 		if (!activeNotes[i].active) {

@@ -5,14 +5,14 @@ A wee wavetable synth for STM32F103Cx boards.
 DAC provided by 8-bit R-2R ladder on GPIO port A pins 0-7.
 
 #### Features
-- [x] Polyphony (10+ capable)
+- [x] Polyphony
 - [x] Sine wave
 - [x] Triangle wave
 - [x] Sawtooth wave
 - [x] Velocity
 - [x] LED heartbeat
 - [x] Mario & Axel F demos
-- [x] LFO (performance issues with high polyphony)
+- [x] LFO (performance issues with polyphony)
 - [x] 48KHz update rate
 - [x] 5k point wave resolution
 - [x] Split keyboard
@@ -23,6 +23,7 @@ DAC provided by 8-bit R-2R ladder on GPIO port A pins 0-7.
 - [ ] Square wave
 - [ ] 'Smart' compression
 - [ ] Drums?
+- [ ] Pitch bending
 
 [![Imgur](https://i.imgur.com/Zxr6q0it.png)](https://i.imgur.com/Zxr6q0i.png)
 [![Imgur](https://i.imgur.com/RtHABrtt.png)](https://i.imgur.com/RtHABrt.png)
