@@ -20,11 +20,25 @@ static void stopNote(uint8 note) {
 }
 
 static void playNote(uint8 note, uint8 velocity) {
+	if (velocity == 0) {
+		stopNote(note);
+		return;
+	}
+
+	int8 nextAvailable = -1;
+
 	for (uint8 i = 0; i < polyphony; i++) {
-		if (!activeNotes[i].active) {
-			activeNotes[i].start(note, velocity);
+		if (activeNotes[i].active && activeNotes[i].note == note) {
 			return;
 		}
+
+		if (!activeNotes[i].active) {
+			nextAvailable = i;
+		}
+	}
+
+	if (nextAvailable > -1) {
+		activeNotes[nextAvailable].start(note, velocity);
 	}
 }
 
@@ -61,12 +75,12 @@ static void tick() {
 
 	// TODO: implement this more better
 //	result = result / activeNoteCount;
-	result = result / 5;
+	result = result / 4;
 
 	result += Wavetable::halfAmplitudes;
 
-	// result = result > 255 ? 255 : result;
-	// result = result < 0 ? 0 : result;
+	result = result > 255 ? 255 : result;
+	result = result < 0 ? 0 : result;
 
 	GPIOA->regs->ODR = result;
 }
