@@ -26,5 +26,6 @@ DAC provided by 8-bit R-2R ladder on GPIO port A pins 0-7.
 
 [![Imgur](https://i.imgur.com/Zxr6q0it.png)](https://i.imgur.com/Zxr6q0i.png)
 [![Imgur](https://i.imgur.com/RtHABrtt.png)](https://i.imgur.com/RtHABrt.png)
+[![Imgur](https://i.imgur.com/frAB9UYm.jpg)](https://i.imgur.com/frAB9UY.jpg)
 
 [Examples on SoundCloud](https://soundcloud.com/user-386388169-92353866/sets/tuneolator-examples)
