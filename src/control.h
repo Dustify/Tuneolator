@@ -54,7 +54,6 @@ static void init() {
 		activeNotes[i].init();
 	}
 
-	Lfo::init();
 	Notes::init();
 	Wavetable::init();
 }
@@ -74,7 +73,7 @@ static void tick() {
 	result += Lfo::tick();
 
 	// TODO: implement this more better
-//	result = result / activeNoteCount;
+	//result = result / activeNoteCount;
 	result = result / 4;
 
 	result += Wavetable::halfAmplitudes;

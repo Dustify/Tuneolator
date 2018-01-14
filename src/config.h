@@ -8,6 +8,8 @@ const uint16 phases = 5e3;
 
 const uint8 polyphony = 10;
 
+const float maxLfoFrequency = 20;
+
 const uint16 maxAttackMilliseconds = 2000;
 const uint16 maxDecayMilliseconds = 2000;
 const uint16 maxReleaseMilliseconds = 5000;

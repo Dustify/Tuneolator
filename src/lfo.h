@@ -4,29 +4,44 @@
 #include <Arduino.h>
 #include "note.h"
 #include "config.h"
+#include "wavetable.h"
 
 class Lfo {
 public:
 static int8* wavetable;
-static uint16 tickCount;
-static uint16 ticks;
+static uint32 tickCount;
+static uint32 ticksPerWave;
 static float phasesPerTick;
-static float frequency;
 static float factor;
 
-static void init() {
-	if (frequency == 0) {
-		frequency = 0.1;
+static void setWavetable(uint8 value) {
+	if (value < 32) {
+		wavetable = NULL;
+		return;
 	}
 
-	float fTicks = ticks_per_second / frequency;
-	ticks = round(fTicks);
+	if (value < 64) {
+		wavetable = Wavetable::sine;
+		return;
+	}
 
-	phasesPerTick = phases / fTicks;
+	if (value < 96) {
+		wavetable = Wavetable::sawtooth;
+		return;
+	}
+
+	wavetable = Wavetable::triangle;
 }
 
-static void setWavetable(int8* value) {
-	wavetable = value;
+static void setFrequency(uint8 value) {
+	float frequency = (value / 127.0) * maxLfoFrequency;
+	float fTicksPerWave = ticks_per_second / frequency;
+	ticksPerWave = round(fTicksPerWave);
+	phasesPerTick = phases / fTicksPerWave;
+}
+
+static void setFactor(uint8 value) {
+	factor = value / 127.0;
 }
 
 static uint16 tick() {
@@ -34,7 +49,7 @@ static uint16 tick() {
 		return 0;
 	}
 
-	if (tickCount >= ticks) {
+	if (tickCount >= ticksPerWave) {
 		tickCount = 0;
 	}
 
@@ -48,10 +63,9 @@ static uint16 tick() {
 };
 
 int8* Lfo::wavetable;
-uint16 Lfo::tickCount;
-uint16 Lfo::ticks;
+uint32 Lfo::tickCount;
+uint32 Lfo::ticksPerWave;
 float Lfo::phasesPerTick;
-float Lfo::frequency;
 float Lfo::factor;
 
 #endif

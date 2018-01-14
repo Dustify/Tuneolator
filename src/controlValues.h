@@ -3,47 +3,32 @@
 #include <arduino.h>
 #include "wavetable.h"
 #include "lfo.h"
+#include "activenote.h"
 
 class ControlValues {
 public:
-static uint8 values[128];
 
 static void set(uint8 id, uint8 value) {
-	// generic assignment here
-	values[id] = value;
+	if (id == controlRelease) {
+		ActiveNote::setRelease(value);
+		return;
+	}
 
 	// set lfo wavetable
 	if (id == controlLfoWavetable) {
-		if (value < 32) {
-			Lfo::wavetable = NULL;
-			return;
-		}
-
-		if (value < 64) {
-			Lfo::wavetable = Wavetable::sine;
-			return;
-		}
-
-		if (value < 96) {
-			Lfo::wavetable = Wavetable::sawtooth;
-			return;
-		}
-
-		Lfo::wavetable = Wavetable::triangle;
+		Lfo::setWavetable(value);
 		return;
 	}
 
 	// set lfo frequency
 	if (id == controlLfoFrequency) {
-		Lfo::frequency = (value / 127.0) * 20.0;
-		Lfo::init();
+		Lfo::setFrequency(value);
 		return;
 	}
 
 	// set lfo factor
 	if (id == controlLfoFactor) {
-		Lfo::factor = value / 127.0;
-		Lfo::init();
+		Lfo::setFactor(value);
 		return;
 	}
 
@@ -86,7 +71,5 @@ static void set(uint8 id, uint8 value) {
 	}
 }
 };
-
-uint8 ControlValues::values[128];
 
 #endif

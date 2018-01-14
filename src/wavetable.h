@@ -6,57 +6,63 @@
 
 class Wavetable {
 public:
-	static int8 sine[phases];
-	static int8 sawtooth[phases];
-	static int8 triangle[phases];
+static int8 sine[phases];
+static int8 sawtooth[phases];
+static int8 triangle[phases];
 
-	static int8* currentLow;
-	static int8* currentHigh;
-	static uint8 split;
+static int8* currentLow;
+static int8* currentHigh;
+static uint8 split;
 
-	static uint16 amplitudes;
-	static float halfAmplitudes;
+static uint16 amplitudes;
+static float halfAmplitudes;
 
-	static void init() {
-		float radiansPerPhase = (2 * PI) / phases;
-		float amplitudesPerPhase = (float)amplitudes / (float)phases;
+static void init() {
+	float radiansPerPhase = (2 * PI) / phases;
+	float amplitudesPerPhase = (float)amplitudes / (float)phases;
 
-		uint16 halfPhases = round(phases * 0.5);
+	float quarterPhases = phases / 4;
+	float amplitudesPerHalfPhase = amplitudesPerPhase * 2;
 
-		float amplitudesPerHalfPhase = amplitudes / halfPhases;
+	for (uint16 i = 0; i < phases; i++) {
+		// sine
+		float sineValue = sin(i * radiansPerPhase);
+		sineValue = sineValue * halfAmplitudes;
 
-		for (uint16 i = 0; i < phases; i++) {
-			// sine
-			float sineValue = sin(i * radiansPerPhase);
-			sineValue = sineValue * halfAmplitudes;
+		sine[i] = round(sineValue);
 
-			sine[i] = round(sineValue);
+		// sawtooth
+		sawtooth[i] = round(i * amplitudesPerPhase - halfAmplitudes);
 
-			// sawtooth
-			sawtooth[i] = round(i * amplitudesPerPhase - halfAmplitudes);
+		// triangle
+		float triangleAmplitude = i * amplitudesPerHalfPhase;
+		uint8 quarterPhase = i / quarterPhases;
 
-			// triangle
-			float triangleAmplitude = i * amplitudesPerHalfPhase - halfAmplitudes;
+		if (quarterPhase == 0) {
+			triangle[i] = round(triangleAmplitude);
+		}
 
-			if (i < halfPhases) {
-				triangle[i] = round(triangleAmplitude);
-			} else {
-				triangle[i] = round(amplitudes - triangleAmplitude);
-			}
+		if (quarterPhase > 0 && quarterPhase < 3) {
+			triangle[i] = round(amplitudes - triangleAmplitude);
+		}
+
+		if (quarterPhase == 3) {
+			triangle[i] = round(triangleAmplitude - (2 * amplitudes));
 		}
 	}
+}
 
-	static void setLow(int8* value) {
-		currentLow = value;
-	}
+static void setLow(int8* value) {
+	currentLow = value;
+}
 
-	static void setHigh(int8* value) {
-		currentHigh = value;
-	}
+static void setHigh(int8* value) {
+	currentHigh = value;
+}
 
-	static void setSplit(uint8 value) {
-		split = value;
-	}
+static void setSplit(uint8 value) {
+	split = value;
+}
 };
 
 int8 Wavetable::sine[phases] = {};
@@ -67,7 +73,7 @@ int8* Wavetable::currentLow = Wavetable::sine;
 int8* Wavetable::currentHigh = Wavetable::sine;
 uint8 Wavetable::split = 0;
 
-uint16 Wavetable::amplitudes = 255;
+uint16 Wavetable::amplitudes = 254;
 float Wavetable::halfAmplitudes = amplitudes / 2;
 
 #endif
