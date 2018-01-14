@@ -22,11 +22,6 @@ void setup() {
 	timer.attachCompare1Interrupt(tick);
 	timer.refresh();
 	timer.resume();
-
-	Lfo::setWavetable(Wavetable::sine);
-	Wavetable::setSplit(0);
-	Wavetable::setLow(Wavetable::triangle);
-	Wavetable::setHigh(Wavetable::sawtooth);
 }
 
 void loop() {

@@ -63,9 +63,9 @@ int8 Wavetable::sine[phases] = {};
 int8 Wavetable::sawtooth[phases] = {};
 int8 Wavetable::triangle[phases] = {};
 
-int8* Wavetable::currentLow;
-int8* Wavetable::currentHigh;
-uint8 Wavetable::split;
+int8* Wavetable::currentLow = Wavetable::sine;
+int8* Wavetable::currentHigh = Wavetable::sine;
+uint8 Wavetable::split = 0;
 
 uint16 Wavetable::amplitudes = 255;
 float Wavetable::halfAmplitudes = amplitudes / 2;

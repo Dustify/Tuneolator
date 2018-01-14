@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "control.h"
-
+#include "controlValues.h"
 
 class Midi {
 public:
@@ -20,6 +20,33 @@ static void init() {
 
 static uint8 message[3];
 static uint8 position;
+
+static void processMessage() {
+	uint8 type = (message[0] & 0b01110000) >> 4;
+	uint8 channel = message[0] & 0b00001111;
+	uint8 note = message[1] & 0b01111111;
+	uint8 velocity = message[2] & 0b01111111;
+
+	if (channel == midiChannel) {
+		// note off
+		if (type == 0) {
+			Control::stopNote(note);
+		}
+
+		// note on
+		if (type == 1) {
+			Control::playNote(note, velocity);
+		}
+
+		// control change
+		if (type == 3) {
+			ControlValues::set(note, velocity);
+		}
+
+		// reset position to second byte in case we get any 'follow-on' messages
+		position = 1;
+	}
+}
 
 static void read() {
 	uint8 value = Serial.read();
@@ -41,33 +68,7 @@ static void read() {
 
 		// all bytes received, time to process
 		if (position == 3) {
-			// Serial.print(",");
-
-			uint8 type = (message[0] & 0b01110000) >> 4;
-			uint8 channel = message[0] & 0b00001111;
-			uint8 note = message[1] & 0b01111111;
-			uint8 velocity = message[2] & 0b01111111;
-
-			// Serial.print(type);
-			// Serial.print(',');
-			// Serial.print(channel);
-			// Serial.print(',');
-			// Serial.print(note);
-			// Serial.print(',');
-			// Serial.print(velocity);
-			// Serial.println();
-
-			// note off
-			if (type == 0) {
-				Control::stopNote(note);
-			}
-
-			// note on
-			if (type == 1) {
-				Control::playNote(note, velocity);
-			}
-
-			position = 1;
+			processMessage();
 		}
 	}
 
