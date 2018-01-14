@@ -18,13 +18,12 @@ DAC provided by 8-bit R-2R ladder on GPIO port A pins 0-7.
 - [x] 5k point wave resolution
 - [x] Split keyboard
 - [x] Note on indication
+- [x] MIDI interface
 
 - [ ] ADSR
 - [ ] Square wave
-- [ ] MIDI interface
 - [ ] 'Smart' compression
 - [ ] Drums?
-
 
 [![Imgur](https://i.imgur.com/Zxr6q0im.png)](https://i.imgur.com/Zxr6q0i.png)
 
