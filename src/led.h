@@ -8,12 +8,12 @@
 // TODO: look into making vars private static
 class Led {
 public:
-static uint16 tickCount;
+static uint32 tickCount;
 static bool state;
 
 static bool indicatorState;
-static uint16 indicatorTickCountStart;
-static uint16 indicatorTickCount;
+static uint32 indicatorTickCountStart;
+static uint32 indicatorTickCount;
 
 static void init() {
 	GPIOB->regs->CRH = 0x000030;
@@ -52,11 +52,11 @@ static void tick() {
 }
 };
 
-uint16 Led::tickCount = 0;
+uint32 Led::tickCount = 0;
 bool Led::state = false;
 
 bool Led::indicatorState;
-uint16 Led::indicatorTickCountStart;
-uint16 Led::indicatorTickCount;
+uint32 Led::indicatorTickCountStart;
+uint32 Led::indicatorTickCount;
 
 #endif
