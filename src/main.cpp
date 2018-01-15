@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include "config.h"
-#include "wavetable.h"
 #include "control.h"
-//#include "demo.h"
 #include "led.h"
 #include "midi.h"
+
+//#include "demo.h"
 
 HardwareTimer timer(1);
 

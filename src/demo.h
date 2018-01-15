@@ -1,4 +1,6 @@
 #include "control.h"
+#include "wavetable.h"
+
 #define DEMO_TIMING 250
 
 class Demo {
@@ -40,86 +42,10 @@ static void cycleNotes() {
 	}
 }
 
-static void vangelis() {
-	playNote(67, 2);
-	playNote(69, 2);
-	playNote(64, 2);
-	playNote(62, 4);
-	pause(2);
-
-	playNote(67, 3);
-	playNote(69, 1);
-	playNote(72, 4);
-	pause(2);
-
-	playNote(71, 0.5);
-	playNote(69, 0.5);
-	playNote(71, 4);
-}
-
-static void numan() {
-	playNote(72, 1);
-	playNote(71, 1);
-	playNote(65, 1);
-	playNote(67, 1);
-	pause(1);
-	playNote(67, 0.5);
-	pause(0.5);
-	playNote(67, 1);
-	pause(1);
-
-	playNote(72, 1);
-	playNote(71, 1);
-	playNote(65, 1);
-	playNote(67, 1);
-	pause(1);
-	playNote(67, 0.5);
-	pause(0.5);
-	playNote(67, 1);
-	pause(1);
-
-	playNote(72, 1);
-	playNote(71, 1);
-	playNote(65, 1);
-	playNote(67, 1);
-	pause(1);
-	playNote(67, 0.5);
-	pause(0.5);
-	playNote(67, 1);
-	pause(1);
-
-	playNote(72, 1);
-	playNote(71, 1);
-	playNote(65, 1);
-	playNote(67, 1);
-	pause(1);
-	playNote(67, 0.5);
-	pause(0.5);
-	playNote(67, 1);
-
-	playNote(64, 1);
-	playNote(65, 1);
-	pause(0.75);
-	playNote(69, 1);
-	playNote(65, 1);
-	pause(2);
-
-	playNote(64, 1);
-	playNote(65, 0.9);
-	pause(0.1);
-	playNote(65, 0.9);
-	playNote(69, 1);
-	playNote(65, 1);
-}
-
-static void cycleTunes() {
-	vangelis();
-	pause(8);
-	numan();
-	pause(8);
-}
-
 static void mario() {
+	Wavetable::split = 0;
+	Wavetable::currentHigh = Wavetable::triangle;
+
 	Control::playNote(76, 64);
 	Control::playNote(66, 64);
 	Control::playNote(50, 64); delay(96);
@@ -1926,6 +1852,10 @@ static void mario() {
 }
 
 static void axel() {
+	Wavetable::split = 50;
+	Wavetable::currentHigh = Wavetable::sawtooth;
+	Wavetable::currentLow = Wavetable::sine;
+
 	Control::playNote(64, 118); delay(253);
 	Control::playNote(64, 118); delay(253);
 	Control::stopNote(64);
@@ -4820,6 +4750,5 @@ static void axel() {
 	Control::stopNote(40);
 	Control::stopNote(35);
 	Control::stopNote(28);
-
 }
 };
