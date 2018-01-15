@@ -6,26 +6,36 @@
 #include "wavetable.h"
 #include "led.h"
 
-const uint8 velocityDivisors[] = { 128,         128,    64,     43,     32,     26,     21,     18,     16,     14,     13,     12,     11,     10,     9,      9,      8,      8,      7,      7,      6,      6,      6,      6,      5,      5,      5,      5,      5,      4,      4,      4,      4,      4,      4,      4,      4,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 };
+const uint8 velocityDivisors[] = { 127,         127,    64,     43,     32,     26,     21,     18,     16,     14,     13,     12,     11,     10,     9,      9,      8,      8,      7,      7,      6,      6,      6,      6,      5,      5,      5,      5,      5,      4,      4,      4,      4,      4,      4,      4,      4,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 };
 
 class ActiveNote {
 public:
 
-
-// static uint16 attackTicks;
-// static uint16 decayTicks;
-// static uint8 sustainLevel;
+static uint32 attackTicksPerIncrement;
 static uint32 releaseTicksPerIncrement;
 
-static void setRelease(uint8 value) {
+static uint32 getTicksPerIncrement(uint8 value, uint16 maxMilliseconds) {
+	if (value == 0) {
+		return 0;
+	}
+
 	float factor = value / 127.0;
-	float ms = factor * maxReleaseMilliseconds;
+	float ms = factor * maxMilliseconds;
 	float ticks = (ms * ticks_per_second) / 1000.0;
-	releaseTicksPerIncrement = ticks / 127.0;
+	return round(ticks / 127.0);
+}
+
+static void setAttack(uint8 value) {
+	attackTicksPerIncrement = getTicksPerIncrement(value, maxAttackMilliseconds);
+}
+
+static void setRelease(uint8 value) {
+	releaseTicksPerIncrement = getTicksPerIncrement(value, maxReleaseMilliseconds);
 }
 
 uint32 envelopeCounter;
 bool releaseActive;
+bool attackActive;
 
 bool active;
 uint8 note;
@@ -39,8 +49,10 @@ void init() {
 void start(uint8 note, uint8 velocity) {
 	Led::indicate();
 	ActiveNote::note = note;
-	ActiveNote::velocityDivisor = velocityDivisors[velocity];
+	velocityDivisor = velocityDivisors[velocity];
+
 	releaseActive = false;
+	attackActive = true;
 	active = true;
 }
 
@@ -53,10 +65,13 @@ int16 tick() {
 	uint16 phase = Notes::notes[note].tick();
 	int16 amplitude = note < Wavetable::split ? Wavetable::currentLow[phase] : Wavetable::currentHigh[phase];
 
-	// TODO: apply adsr here
-
 	uint16 envelopeDivisor = 1;
 
+	// TODO: attack here
+	// TODO: decay here
+	// TODO: sustain here
+
+	// release
 	if (releaseActive) {
 		if (ActiveNote::releaseTicksPerIncrement == 0) {
 			envelopeDivisor = 127;
@@ -76,6 +91,7 @@ int16 tick() {
 }
 };
 
+uint32 ActiveNote::attackTicksPerIncrement;
 uint32 ActiveNote::releaseTicksPerIncrement;
 
 #endif

@@ -9,6 +9,12 @@ class ControlValues {
 public:
 
 static void set(uint8 id, uint8 value) {
+	// set attack
+	if (id == controlAttack) {
+		ActiveNote::setAttack(value);
+		return;
+	}
+
 	// set release
 	if (id == controlRelease) {
 		ActiveNote::setRelease(value);

@@ -12,7 +12,7 @@ public:
   uint16 tickCount;
 
   void init(float frequency) {
-    float fTicks = ticks_per_second / frequency;
+    double fTicks = ticks_per_second / frequency;
 
     ticks = round(fTicks);
     phasesPerTick = round(phases / fTicks);

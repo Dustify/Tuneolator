@@ -62,23 +62,21 @@ static void init() {
 static void tick() {
 	int16 result = 0;
 
-	uint8 activeNoteCount = 0;
-
 	for (uint8 i = 0; i < polyphony; i++) {
 		if (activeNotes[i].active) {
 			result += activeNotes[i].tick();
-			activeNoteCount++;
 		}
 	}
 
+	// apply lfo
 	result += Lfo::tick();
 
-	// TODO: implement this more better
-	//result = result / activeNoteCount;
-	result = result / 4;
+	// TODO: apply compression here
 
+	// shift output to positive
 	result += Wavetable::halfAmplitudes;
 
+	// hard clipping
 	result = result > 255 ? 255 : result;
 	result = result < 0 ? 0 : result;
 

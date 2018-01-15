@@ -14,25 +14,28 @@ static int8* currentLow;
 static int8* currentHigh;
 static uint8 split;
 
-static uint16 amplitudes;
-static float halfAmplitudes;
+static uint8 halfAmplitudes;
 
 static void init() {
-	float radiansPerPhase = (2 * PI) / phases;
-	float amplitudesPerPhase = (float)amplitudes / (float)phases;
+	uint16 amplitudes = 254;
+	double dHalfAmplitudes = amplitudes / 2;
+	halfAmplitudes = round(dHalfAmplitudes);
 
-	float quarterPhases = phases / 4;
-	float amplitudesPerHalfPhase = amplitudesPerPhase * 2;
+	double radiansPerPhase = (2 * PI) / phases;
+	double amplitudesPerPhase = (float)amplitudes / (float)phases;
+
+	double quarterPhases = phases / 4;
+	double amplitudesPerHalfPhase = amplitudesPerPhase * 2;
 
 	for (uint16 i = 0; i < phases; i++) {
 		// sine
 		float sineValue = sin(i * radiansPerPhase);
-		sineValue = sineValue * halfAmplitudes;
+		sineValue = sineValue * dHalfAmplitudes;
 
 		sine[i] = round(sineValue);
 
 		// sawtooth
-		sawtooth[i] = round(i * amplitudesPerPhase - halfAmplitudes);
+		sawtooth[i] = round(i * amplitudesPerPhase - dHalfAmplitudes);
 
 		// triangle
 		float triangleAmplitude = i * amplitudesPerHalfPhase;
@@ -59,11 +62,11 @@ static void setLow(uint8 value) {
 	}
 
 	if (value < 86) {
-		currentLow = Wavetable::sawtooth;
+		currentLow = Wavetable::triangle;
 		return;
 	}
 
-	Wavetable::currentLow = Wavetable::triangle;
+	currentLow = Wavetable::sawtooth;
 }
 
 static void setHigh(uint8 value) {
@@ -73,11 +76,11 @@ static void setHigh(uint8 value) {
 	}
 
 	if (value < 86) {
-		currentHigh = Wavetable::sawtooth;
+		currentHigh = Wavetable::triangle;
 		return;
 	}
 
-	Wavetable::currentHigh = Wavetable::triangle;
+	currentHigh = Wavetable::sawtooth;
 }
 
 static void setSplit(uint8 value) {
@@ -93,7 +96,6 @@ int8* Wavetable::currentLow = Wavetable::sine;
 int8* Wavetable::currentHigh = Wavetable::sine;
 uint8 Wavetable::split = 0;
 
-uint16 Wavetable::amplitudes = 254;
-float Wavetable::halfAmplitudes = amplitudes / 2;
+uint8 Wavetable::halfAmplitudes;
 
 #endif
