@@ -4,6 +4,7 @@
 #include "wavetable.h"
 #include "lfo.h"
 #include "activenote.h"
+#include "control.h"
 
 class ControlValues {
 public:
@@ -54,6 +55,12 @@ static void set(uint8 id, uint8 value) {
 	// set high wavetable
 	if (id == controlHighWavetable) {
 		Wavetable::setHigh(value);
+		return;
+	}
+
+	// set compression
+	if (id == controlCompressor) {
+		Control::setCompression(value);
 		return;
 	}
 }
