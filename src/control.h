@@ -72,6 +72,7 @@ static void tick() {
 	result += Lfo::tick();
 
 	// TODO: apply compression here
+	result = result / 4;
 
 	// shift output to positive
 	result += Wavetable::halfAmplitudes;
