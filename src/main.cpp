@@ -22,6 +22,9 @@ void setup() {
 	timer.attachCompare1Interrupt(tick);
 	timer.refresh();
 	timer.resume();
+
+	//Demo::mario();
+	//Demo::axel();
 }
 
 void loop() {
