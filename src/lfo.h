@@ -15,22 +15,17 @@ static float phasesPerTick;
 static float factor;
 
 static void setWavetable(uint8 value) {
-	if (value < 32) {
+	if (value < 42) {
 		wavetable = NULL;
 		return;
 	}
 
-	if (value < 64) {
-		wavetable = Wavetable::sine;
+	if (value < 84) {
+		wavetable = Wavetable::currentLow;
 		return;
 	}
 
-	if (value < 96) {
-		wavetable = Wavetable::sawtooth;
-		return;
-	}
-
-	wavetable = Wavetable::triangle;
+	wavetable = Wavetable::currentHigh;
 }
 
 static void setFrequency(uint8 value) {

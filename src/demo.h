@@ -44,7 +44,7 @@ static void cycleNotes() {
 
 static void mario() {
 	Wavetable::split = 0;
-	Wavetable::currentHigh = Wavetable::triangle;
+	Wavetable::setTriangle(Wavetable::currentHigh);
 
 	Control::playNote(76, 64);
 	Control::playNote(66, 64);
@@ -1853,8 +1853,8 @@ static void mario() {
 
 static void axel() {
 	Wavetable::split = 50;
-	Wavetable::currentHigh = Wavetable::sawtooth;
-	Wavetable::currentLow = Wavetable::sine;
+	Wavetable::setSawtooth(Wavetable::currentHigh);
+	Wavetable::setSine(Wavetable::currentLow);
 
 	Control::playNote(64, 118); delay(253);
 	Control::playNote(64, 118); delay(253);
