@@ -9,21 +9,22 @@ DAC provided by 8-bit R-2R ladder on GPIO port A pins 0-7.
 - [x] Sine wave
 - [x] Triangle wave
 - [x] Sawtooth wave
+- [x] Square wave
 - [x] Velocity
 - [x] LED heartbeat
 - [x] Mario & Axel F demos
-- [x] LFO (performance issues with polyphony)
+- [x] LFO (performance issues with polyphony, ADSR)
 - [x] 48KHz update rate
 - [x] 5k point wave resolution
 - [x] Split keyboard
-- [x] Note on indication
+- [x] Note on indicator
 - [x] MIDI interface
 
 - [ ] ADSR
-- [ ] Square wave
 - [ ] 'Smart' compression
 - [ ] Drums?
 - [ ] Pitch bending
+- [ ] 'Busy' indicator
 
 [![Imgur](https://i.imgur.com/Zxr6q0it.png)](https://i.imgur.com/Zxr6q0i.png)
 [![Imgur](https://i.imgur.com/RtHABrtt.png)](https://i.imgur.com/RtHABrt.png)
