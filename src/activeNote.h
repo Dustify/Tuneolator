@@ -58,19 +58,22 @@ void stop() {
 	envelopePhase = 3;
 }
 
+int16 amplitude;
 uint32 envelopeCounter;
 uint8 envelopePhase; // 0 attack 1 decay 2 sustain 3 release
-static uint16 envelopeDivisor;
 
 void processAttack() {
 	if (ActiveNote::attackTicksPerIncrement == 0) {
-		envelopeDivisor = 1;
-	} else {
-		envelopeDivisor = 127 - (envelopeCounter / ActiveNote::attackTicksPerIncrement + 1);
+		envelopePhase++;
+		envelopeCounter = 0;
+		return;
 	}
 
-	if (envelopeDivisor <= 1) {
-		envelopePhase = 1;
+	uint8 divisor = 127 - (envelopeCounter / attackTicksPerIncrement);
+	amplitude = amplitude / divisor;
+
+	if (divisor <= 1) {
+		envelopePhase++;
 		envelopeCounter = 0;
 	}
 
@@ -79,12 +82,14 @@ void processAttack() {
 
 void processRelease() {
 	if (ActiveNote::releaseTicksPerIncrement == 0) {
-		envelopeDivisor = 127;
-	} else {
-		envelopeDivisor = envelopeCounter / ActiveNote::releaseTicksPerIncrement + 1;
+		active = false;
+		return;
 	}
 
-	if (envelopeDivisor >= 127) {
+	uint8 divisor = envelopeCounter / releaseTicksPerIncrement + 1;
+	amplitude = amplitude / divisor;
+
+	if (divisor >= 127) {
 		active = false;
 	}
 
@@ -93,9 +98,7 @@ void processRelease() {
 
 int16 tick() {
 	uint16 phase = Notes::notes[note].tick();
-	int16 amplitude = note < Wavetable::split ? Wavetable::currentLow[phase] : Wavetable::currentHigh[phase];
-
-	envelopeDivisor = 1;
+	amplitude = note < Wavetable::split ? Wavetable::currentLow[phase] : Wavetable::currentHigh[phase];
 
 	// TODO: add more envelopes!
 	switch (envelopePhase) {
@@ -103,12 +106,11 @@ int16 tick() {
 	case 3: processRelease(); break;
 	}
 
-	return (amplitude / velocityDivisor) / envelopeDivisor;
+	return amplitude / velocityDivisor;
 }
 };
 
 uint32 ActiveNote::attackTicksPerIncrement;
 uint32 ActiveNote::releaseTicksPerIncrement;
-uint16 ActiveNote::envelopeDivisor;
 
 #endif
