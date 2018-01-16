@@ -33,9 +33,6 @@ static void setRelease(uint8 value) {
 	releaseTicksPerIncrement = getTicksPerIncrement(value, maxReleaseMilliseconds);
 }
 
-uint32 envelopeCounter;
-uint8 envelopePhase; // 0 attack 1 decay 2 sustain 3 release
-
 bool active;
 uint8 note;
 uint8 velocityDivisor;
@@ -56,17 +53,35 @@ void start(uint8 note, uint8 velocity) {
 }
 
 void stop() {
+	// TODO: release needs to pick up from current position!
 	envelopeCounter = 0;
 	envelopePhase = 3;
 }
 
+uint32 envelopeCounter;
+uint8 envelopePhase; // 0 attack 1 decay 2 sustain 3 release
 static uint16 envelopeDivisor;
+
+void processAttack() {
+	if (ActiveNote::attackTicksPerIncrement == 0) {
+		envelopeDivisor = 1;
+	} else {
+		envelopeDivisor = 127 - (envelopeCounter / ActiveNote::attackTicksPerIncrement + 1);
+	}
+
+	if (envelopeDivisor <= 1) {
+		envelopePhase = 1;
+		envelopeCounter = 0;
+	}
+
+	envelopeCounter++;
+}
 
 void processRelease() {
 	if (ActiveNote::releaseTicksPerIncrement == 0) {
 		envelopeDivisor = 127;
 	} else {
-		envelopeDivisor = (envelopeCounter / ActiveNote::releaseTicksPerIncrement) + 1;
+		envelopeDivisor = envelopeCounter / ActiveNote::releaseTicksPerIncrement + 1;
 	}
 
 	if (envelopeDivisor >= 127) {
@@ -82,11 +97,9 @@ int16 tick() {
 
 	envelopeDivisor = 1;
 
-	// TODO: attack here
-	// TODO: decay here
-	// TODO: sustain here
-
+	// TODO: add more envelopes!
 	switch (envelopePhase) {
+	case 0: processAttack(); break;
 	case 3: processRelease(); break;
 	}
 
