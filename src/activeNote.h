@@ -12,6 +12,8 @@ class ActiveNote {
 public:
 
 static uint32 attackTicks;
+static uint32 decayTicks;
+static uint8 sustainLevel;
 static uint32 releaseTicks;
 
 static uint32 getEnvelopeTicks(uint8 value, uint16 maxMilliseconds) {
@@ -27,6 +29,14 @@ static uint32 getEnvelopeTicks(uint8 value, uint16 maxMilliseconds) {
 
 static void setAttack(uint8 value) {
 	attackTicks = getEnvelopeTicks(value, maxAttackMilliseconds);
+}
+
+static void setDecay(uint8 value) {
+	decayTicks = getEnvelopeTicks(value, maxDecayMilliseconds);
+}
+
+static void setSustain(uint8 value) {
+	sustainLevel = value;
 }
 
 static void setRelease(uint8 value) {
@@ -75,6 +85,22 @@ void processAttack() {
 	envelopeCounter++;
 }
 
+void processDecay() {
+	if (envelopeCounter >= decayTicks) {
+		envelopePhase++;
+		envelopeCounter = 0;
+		return;
+	}
+
+	//amplitude = amplitude - Fixed::factorEnvelope(amplitude, envelopeCounter, releaseTicks);
+
+	envelopeCounter++;
+}
+
+void processSustain() {
+
+}
+
 void processRelease() {
 	if (envelopeCounter >= releaseTicks) {
 		active = false;
@@ -97,6 +123,8 @@ int8 tick() {
 	// TODO: add more envelopes!
 	switch (envelopePhase) {
 	case 0: processAttack(); break;
+	case 1: processDecay(); break;
+	case 2: processSustain(); break;
 	case 3: processRelease(); break;
 	}
 
@@ -105,6 +133,8 @@ int8 tick() {
 };
 
 uint32 ActiveNote::attackTicks;
+uint32 ActiveNote::decayTicks;
+uint8 ActiveNote::sustainLevel;
 uint32 ActiveNote::releaseTicks;
 
 #endif

@@ -29,7 +29,7 @@ const uint8 controlLowWavetable = 18;
 const uint8 controlSplit = 73;
 const uint8 controlHighWavetable = 72;
 
-const uint8 controlCompressor = 74;
+const uint8 controlVolume = 74;
 
 // actual constants
 const uint8 amplitudes = 254;

@@ -16,6 +16,18 @@ static void set(uint8 id, uint8 value) {
 		return;
 	}
 
+	// set decay
+	if (id == controlDecay) {
+		ActiveNote::setDecay(value);
+		return;
+	}
+
+	// set sustain
+	if (id == controlSustain) {
+		ActiveNote::setSustain(value);
+		return;
+	}
+
 	// set release
 	if (id == controlRelease) {
 		ActiveNote::setRelease(value);
