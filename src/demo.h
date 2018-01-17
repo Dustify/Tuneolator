@@ -1,50 +1,15 @@
+#ifndef DEMO_H
+#define DEMO_H
+
 #include "control.h"
 #include "wavetable.h"
 
-#define DEMO_TIMING 250
-
 class Demo {
-private:
-static void pause(float duration) {
-	delay(DEMO_TIMING * duration);
-}
-
-static void playNote(uint8 note, float duration) {
-	Control::playNote(note);
-	pause(duration);
-	Control::stopNote(note);
-}
-
 public:
-static void chords(uint8 root) {
-	Control::playNote(root);
-	Control::playNote(root + 7);
-
-	Control::playNote(root + 3);
-	delay(2000);
-
-	Control::stopNote(root + 3);
-	Control::playNote(root + 4);
-	delay(2000);
-	Control::stopNote(root + 4);
-
-	Control::stopNote(root);
-	Control::stopNote(root + 7);
-}
-
-static void cycleNotes() {
-	for (int i = 0; i < 128; i++) {
-		playNote(i, 1);
-	}
-
-	for (int i = 126; i > 0; i--) {
-		playNote(i, 1);
-	}
-}
 
 static void mario() {
 	Wavetable::split = 0;
-	Wavetable::setTriangle(Wavetable::currentHigh);
+	Wavetable::setTriangle(Wavetable::high);
 
 	Control::playNote(76, 64);
 	Control::playNote(66, 64);
@@ -1853,8 +1818,8 @@ static void mario() {
 
 static void axel() {
 	Wavetable::split = 50;
-	Wavetable::setSawtooth(Wavetable::currentHigh);
-	Wavetable::setSine(Wavetable::currentLow);
+	Wavetable::setSawtooth(Wavetable::high);
+	Wavetable::setSine(Wavetable::low);
 
 	Control::playNote(64, 118); delay(253);
 	Control::playNote(64, 118); delay(253);
@@ -4752,3 +4717,5 @@ static void axel() {
 	Control::stopNote(28);
 }
 };
+
+#endif
