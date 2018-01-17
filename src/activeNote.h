@@ -86,7 +86,7 @@ void processRelease() {
 }
 
 int8 tick() {
-	if (!active) {
+	if (!active || Wavetable::busy) {
 		return 0;
 	}
 

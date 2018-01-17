@@ -7,6 +7,8 @@
 class Wavetable {
 public:
 
+static bool busy;
+
 static int8 low[phases];
 static int8 high[phases];
 
@@ -22,6 +24,7 @@ static void init() {
 }
 
 static void setSine(int8 *target) {
+	busy = true;
 	double dHalfAmplitudes = amplitudes / 2.0;
 	double radiansPerPhase = (2.0 * PI) / phases;
 
@@ -32,9 +35,12 @@ static void setSine(int8 *target) {
 
 		target[i] = round(sineValue);
 	}
+
+	busy = false;
 }
 
 static void setTriangle(int8 *target) {
+	busy = true;
 	double amplitudesPerPhase = (float)amplitudes / (float)phases;
 	double quarterPhases = phases / 4.0;
 	double amplitudesPerHalfPhase = amplitudesPerPhase * 2.0;
@@ -55,23 +61,31 @@ static void setTriangle(int8 *target) {
 			target[i] = round(triangleAmplitude - (2.0 * amplitudes));
 		}
 	}
+
+	busy = false;
 }
 
 static void setSquare(int8 *target) {
+	busy = true;
 	double halfPhases = phases / 2.0;
 
 	for (uint16 i = 0; i < phases; i++) {
 		target[i] = i < halfPhases ? 127 : -127;
 	}
+
+	busy = false;
 }
 
 static void setSawtooth(int8 *target) {
+	busy = true;
 	double dHalfAmplitudes = amplitudes / 2.0;
 	double amplitudesPerPhase = (float)amplitudes / (float)phases;
 
 	for (uint16 i = 0; i < phases; i++) {
 		target[i] = round(i * amplitudesPerPhase - dHalfAmplitudes);
 	}
+
+	busy = false;
 }
 
 static uint8 low_wave_id;
@@ -153,5 +167,7 @@ uint8 Wavetable::halfAmplitudes;
 
 uint8 Wavetable::low_wave_id;
 uint8 Wavetable::high_wave_id;
+
+bool Wavetable::busy;
 
 #endif
