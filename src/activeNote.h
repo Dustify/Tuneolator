@@ -5,32 +5,33 @@
 #include "notes.h"
 #include "wavetable.h"
 #include "led.h"
+#include "fixed.h"
 
 const uint8 velocityDivisors[] = { 127,         127,    64,     43,     32,     26,     21,     18,     16,     14,     13,     12,     11,     10,     9,      9,      8,      8,      7,      7,      6,      6,      6,      6,      5,      5,      5,      5,      5,      4,      4,      4,      4,      4,      4,      4,      4,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      3,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      2,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1,      1 };
 
 class ActiveNote {
 public:
 
-static uint32 attackTicksPerIncrement;
-static uint32 releaseTicksPerIncrement;
+static uint32 attackTicks;
+static uint32 releaseTicks;
 
-static uint32 getTicksPerIncrement(uint8 value, uint16 maxMilliseconds) {
+static uint32 getEnvelopeTicks(uint8 value, uint16 maxMilliseconds) {
 	if (value == 0) {
 		return 0;
 	}
 
 	float factor = value / 127.0;
 	float ms = factor * maxMilliseconds;
-	float ticks = (ms * ticks_per_second) / 1000.0;
-	return round(ticks / 127.0);
+
+	return round((ms * ticks_per_second) / 1000.0);
 }
 
 static void setAttack(uint8 value) {
-	attackTicksPerIncrement = getTicksPerIncrement(value, maxAttackMilliseconds);
+	attackTicks = getEnvelopeTicks(value, maxAttackMilliseconds);
 }
 
 static void setRelease(uint8 value) {
-	releaseTicksPerIncrement = getTicksPerIncrement(value, maxReleaseMilliseconds);
+	releaseTicks = getEnvelopeTicks(value, maxReleaseMilliseconds);
 }
 
 bool active;
@@ -53,50 +54,44 @@ void start(uint8 note, uint8 velocity) {
 }
 
 void stop() {
-	// TODO: release needs to pick up from current position!
+	// TODO: release needs to pick up from current position (i.e. pay attention to where attack / decay / sustain is)!
 	envelopeCounter = 0;
 	envelopePhase = 3;
 }
 
-int16 amplitude;
+int8 amplitude;
 uint32 envelopeCounter;
 uint8 envelopePhase; // 0 attack 1 decay 2 sustain 3 release
 
 void processAttack() {
-	if (ActiveNote::attackTicksPerIncrement == 0) {
+	if (envelopeCounter == attackTicks) {
+		// we've finished attack, move to next envelope and reset counter
 		envelopePhase++;
 		envelopeCounter = 0;
 		return;
 	}
 
-	uint8 divisor = 127 - (envelopeCounter / attackTicksPerIncrement);
-	amplitude = amplitude / divisor;
-
-	if (divisor <= 1) {
-		envelopePhase++;
-		envelopeCounter = 0;
-	}
+	amplitude = Fixed::factor(amplitude, envelopeCounter, attackTicks);
 
 	envelopeCounter++;
 }
 
 void processRelease() {
-	if (ActiveNote::releaseTicksPerIncrement == 0) {
+	if (envelopeCounter == releaseTicks) {
 		active = false;
 		return;
 	}
 
-	uint8 divisor = envelopeCounter / releaseTicksPerIncrement + 1;
-	amplitude = amplitude / divisor;
-
-	if (divisor >= 127) {
-		active = false;
-	}
+	amplitude = amplitude - Fixed::factor(amplitude, envelopeCounter, releaseTicks);
 
 	envelopeCounter++;
 }
 
-int16 tick() {
+int8 tick() {
+	if (!active) {
+		return 0;
+	}
+
 	uint16 phase = Notes::notes[note].tick();
 	amplitude = note < Wavetable::split ? Wavetable::currentLow[phase] : Wavetable::currentHigh[phase];
 
@@ -106,11 +101,11 @@ int16 tick() {
 	case 3: processRelease(); break;
 	}
 
-	return amplitude / velocityDivisor;
+	return amplitude;    // / velocityDivisor;
 }
 };
 
-uint32 ActiveNote::attackTicksPerIncrement;
-uint32 ActiveNote::releaseTicksPerIncrement;
+uint32 ActiveNote::attackTicks;
+uint32 ActiveNote::releaseTicks;
 
 #endif
