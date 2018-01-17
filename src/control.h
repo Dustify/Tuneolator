@@ -9,7 +9,7 @@
 
 class Control {
 public:
-static uint8 compressionDivisor;
+static uint8 volume;
 static ActiveNote activeNotes[polyphony];
 
 static void stopNote(uint8 note) {
@@ -61,8 +61,8 @@ static void init() {
 	Wavetable::init();
 }
 
-static void setCompression(uint8 value) {
-	compressionDivisor = ((value / 127.0) * polyphony) + 1;
+static void setVolume(uint8 value) {
+	volume = value;
 }
 
 static void tick() {
@@ -75,8 +75,8 @@ static void tick() {
 	// apply lfo
 	result += Lfo::tick();
 
-	// 'compression'
-	result = result / compressionDivisor;
+	// volume
+	result = Fixed::factorVolume(result, volume, midiMaxValue);
 
 	// shift output to positive
 	result += Wavetable::halfAmplitudes;
@@ -90,6 +90,6 @@ static void tick() {
 };
 
 ActiveNote Control::activeNotes[polyphony];
-uint8 Control::compressionDivisor = 4;
+uint8 Control::volume = 64;
 
 #endif

@@ -6,6 +6,7 @@
 #include "config.h"
 #include "wavetable.h"
 #include "fixed.h"
+#include "config.h"
 
 class Lfo {
 public:
@@ -46,8 +47,8 @@ static int8 tick() {
 		tickCount = 0;
 	}
 
-	uint16 phase = Fixed::factor(phases, tickCount, ticks);
-	int8 result = Fixed::factor(wavetable[phase], factor, 127);
+	uint16 phase = Fixed::factorLfo(phases, tickCount, ticks);
+	int8 result = Fixed::factorLfoVolume(wavetable[phase], factor, midiMaxValue);
 
 	tickCount++;
 

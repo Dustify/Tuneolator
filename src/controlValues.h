@@ -58,9 +58,9 @@ static void set(uint8 id, uint8 value) {
 		return;
 	}
 
-	// set compression
+	// set volume
 	if (id == controlCompressor) {
-		Control::setCompression(value);
+		Control::setVolume(value);
 		return;
 	}
 }

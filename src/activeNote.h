@@ -6,6 +6,7 @@
 #include "wavetable.h"
 #include "led.h"
 #include "fixed.h"
+#include "config.h"
 
 class ActiveNote {
 public:
@@ -69,7 +70,7 @@ void processAttack() {
 		return;
 	}
 
-	amplitude = Fixed::factor(amplitude, envelopeCounter, attackTicks);
+	amplitude = Fixed::factorEnvelope(amplitude, envelopeCounter, attackTicks);
 
 	envelopeCounter++;
 }
@@ -80,7 +81,7 @@ void processRelease() {
 		return;
 	}
 
-	amplitude = amplitude - Fixed::factor(amplitude, envelopeCounter, releaseTicks);
+	amplitude = amplitude - Fixed::factorEnvelope(amplitude, envelopeCounter, releaseTicks);
 
 	envelopeCounter++;
 }
@@ -99,7 +100,7 @@ int8 tick() {
 	case 3: processRelease(); break;
 	}
 
-	return Fixed::factor(amplitude, velocity, 127);    // / velocityDivisor;
+	return Fixed::factorVelocity(amplitude, velocity, midiMaxValue);
 }
 };
 

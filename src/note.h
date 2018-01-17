@@ -20,7 +20,7 @@ public:
       tickCount = 0;
     }
 
-    uint16 result = Fixed::factor(phases, tickCount, ticks);
+    uint16 result = Fixed::factorNote(phases, tickCount, ticks);
 
     tickCount++;
 

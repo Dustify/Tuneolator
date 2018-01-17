@@ -5,39 +5,69 @@
 
 class Fixed {
 public:
-  static int32_t scale;
+  static int32 scale;
 
   // envelope
-  static int8_t factor(int8_t source, uint32_t numerator, uint32_t denominator) {
-    uint32_t numeratorScale = numerator * scale;
-    uint32_t factorScale = numeratorScale / denominator;
-    int32_t resultScale = source * factorScale;
-    int8_t result = resultScale / scale;
+  static int8 factorEnvelope(int8 source, uint32 numerator, uint32 denominator) {
+    uint32 numeratorScale = numerator * scale;
+    uint32 factorScale = numeratorScale / denominator;
+    int32 resultScale = source * factorScale;
+    int8 result = resultScale / scale;
+
+    return result;
+  }
+
+  // velocity
+  static int8 factorVelocity(int8 source, uint8 numerator, uint8 denominator) {
+    uint32 numeratorScale = numerator * scale;
+    uint32 factorScale = numeratorScale / denominator;
+    int32 resultScale = source * factorScale;
+    int8 result = resultScale / scale;
+
+    return result;
+  }
+
+  // volume
+  static int16 factorVolume(int16 source, uint8 numerator, uint8 denominator) {
+    uint32 numeratorScale = numerator * scale;
+    uint32 factorScale = numeratorScale / denominator;
+    int32 resultScale = source * factorScale;
+    int16 result = resultScale / scale;
 
     return result;
   }
 
   // note
-  static uint16_t factor(uint16_t source, uint16_t numerator, uint16_t denominator) {
-    uint32_t numeratorScale = numerator * scale;
-    uint32_t factorScale = numeratorScale / denominator;
-    int32_t resultScale = source * factorScale;
-    uint16_t result = resultScale / scale;
+  static uint16 factorNote(uint16 source, uint16 numerator, uint16 denominator) {
+    uint32 numeratorScale = numerator * scale;
+    uint32 factorScale = numeratorScale / denominator;
+    int32 resultScale = source * factorScale;
+    uint16 result = resultScale / scale;
 
     return result;
   }
 
   // lfo
-  static uint16_t factor(uint16_t source, uint32_t numerator, uint32_t denominator) {
-    uint32_t numeratorScale = numerator * scale;
-    uint32_t factorScale = numeratorScale / denominator;
-    int32_t resultScale = source * factorScale;
-    uint16_t result = resultScale / scale;
+  static uint16 factorLfo(uint16 source, uint32 numerator, uint32 denominator) {
+    uint32 numeratorScale = numerator * scale;
+    uint32 factorScale = numeratorScale / denominator;
+    int32 resultScale = source * factorScale;
+    uint16 result = resultScale / scale;
+
+    return result;
+  }
+
+  // lfo volume
+  static int8 factorLfoVolume(int8 source, uint32 numerator, uint32 denominator) {
+    uint32 numeratorScale = numerator * scale;
+    uint32 factorScale = numeratorScale / denominator;
+    int32 resultScale = source * factorScale;
+    int8 result = resultScale / scale;
 
     return result;
   }
 };
 
-int32_t Fixed::scale = 1e4;
+int32 Fixed::scale = 1e4;
 
 #endif

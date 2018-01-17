@@ -5,7 +5,6 @@
 
 const uint32 ticks_per_second = 48e3;
 const uint16 phases = 7256;
-const uint8 amplitudes = 254;
 
 const uint8 polyphony = 10;
 
@@ -31,5 +30,9 @@ const uint8 controlSplit = 73;
 const uint8 controlHighWavetable = 72;
 
 const uint8 controlCompressor = 74;
+
+// actual constants
+const uint8 amplitudes = 254;
+const uint8 midiMaxValue = 127;
 
 #endif
