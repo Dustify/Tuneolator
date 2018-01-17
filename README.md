@@ -15,7 +15,7 @@ DAC provided by 8-bit R-2R ladder on GPIO port A pins 0-7.
 - [x] Mario & Axel F demos
 - [x] LFO (performance issues with polyphony, ADSR)
 - [x] 48KHz update rate
-- [x] 5k point wave resolution
+- [x] 7k point wave resolution
 - [x] Split keyboard
 - [x] Note on indicator
 - [x] MIDI interface
