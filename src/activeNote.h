@@ -36,7 +36,7 @@ static void setRelease(uint8 value) {
 
 bool active;
 uint8 note;
-uint8 velocityDivisor;
+uint8 velocity;
 
 void init() {
 	active = false;
@@ -46,7 +46,7 @@ void init() {
 void start(uint8 note, uint8 velocity) {
 	Led::indicate();
 	ActiveNote::note = note;
-	velocityDivisor = velocityDivisors[velocity];
+	ActiveNote::velocity = velocity;
 
 	envelopePhase = 0;
 	envelopeCounter = 0;
@@ -101,7 +101,7 @@ int8 tick() {
 	case 3: processRelease(); break;
 	}
 
-	return amplitude;    // / velocityDivisor;
+	return Fixed::factor(amplitude, velocity, 127);    // / velocityDivisor;
 }
 };
 
