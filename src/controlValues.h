@@ -59,7 +59,7 @@ static void set(uint8 id, uint8 value) {
 	}
 
 	// set volume
-	if (id == controlCompressor) {
+	if (id == controlVolume) {
 		Control::setVolume(value);
 		return;
 	}
