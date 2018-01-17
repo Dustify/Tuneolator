@@ -15,6 +15,13 @@ static uint32 tickCount;
 static uint32 ticks;
 static uint8 factor;
 
+static bool active() {
+	return
+	    wavetable != NULL &&
+	    ticks > 0 &&
+	    factor > 0;
+}
+
 static void setWavetable(uint8 value) {
 	if (value < 42) {
 		wavetable = NULL;
@@ -30,12 +37,17 @@ static void setWavetable(uint8 value) {
 }
 
 static void setFrequency(uint8 value) {
+	if (value == 0) {
+		ticks = 0;
+		return;
+	}
+
 	double frequency = (value / 127.0) * maxLfoFrequency;
 	ticks = round(ticks_per_second / frequency);
 }
 
 static void setFactor(uint8 value) {
-	factor = value;// / 127.0;
+	factor = value;    // / 127.0;
 }
 
 static int8 tick() {

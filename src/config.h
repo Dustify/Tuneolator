@@ -6,8 +6,6 @@
 const uint32 ticks_per_second = 48e3;
 const uint16 phases = 7256;
 
-const uint8 polyphony = 10;
-
 const float maxLfoFrequency = 20;
 
 const uint16 maxAttackMilliseconds = 2000;
@@ -31,7 +29,8 @@ const uint8 controlHighWavetable = 72;
 
 const uint8 controlVolume = 74;
 
-// actual constants
+// actual constants, not really configurable
+const uint8 polyphony = 9;
 const uint8 amplitudes = 254;
 const uint8 midiMaxValue = 127;
 

@@ -44,11 +44,13 @@ static void setRelease(uint8 value) {
 }
 
 bool active;
+bool available;
 uint8 note;
 uint8 velocity;
 
 void init() {
 	active = false;
+	available = true;
 }
 
 // TODO: start note at same amplitude as last one
@@ -60,12 +62,14 @@ void start(uint8 note, uint8 velocity) {
 	envelopePhase = 0;
 	envelopeCounter = 0;
 	active = true;
+	available = false;
 }
 
 void stop() {
 	// TODO: release needs to pick up from current position (i.e. pay attention to where attack / decay / sustain is)!
 	envelopeCounter = 0;
 	envelopePhase = 3;
+	available = true;
 }
 
 int8 amplitude;

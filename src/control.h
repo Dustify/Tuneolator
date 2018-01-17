@@ -26,27 +26,37 @@ static void playNote(uint8 note, uint8 velocity) {
 		return;
 	}
 
-	int8 nextAvailable = -1;
+	uint8 actualPolyphony = polyphony;
 
-	for (uint8 i = 0; i < polyphony; i++) {
-		// re-use existing note if it matches
-		if (activeNotes[i].active && activeNotes[i].note == note) {
-			nextAvailable = i;
-			break;
+	// remove one note if LFO is active
+	if (Lfo::active()) {
+		actualPolyphony--;
+	}
+
+	for (uint8 i = 0; i < actualPolyphony; i++) {
+		// re-use note if already set
+		if (activeNotes[i].note == note) {
+			activeNotes[i].start(note, velocity);
+			return;
 		}
+	}
 
-		// just find next inactive note
+	for (uint8 i = 0; i < actualPolyphony; i++) {
+		// find an inactive note
 		if (!activeNotes[i].active) {
-			nextAvailable = i;
+			activeNotes[i].start(note, velocity);
+			return;
 		}
 	}
 
-	// if there's nothing available, do nothing
-	if (nextAvailable == -1) {
-		return;
+	for (uint8 i = 0; i < actualPolyphony; i++) {
+		// if we've got this far, all notes are active
+		// find one in release (available)
+		if (activeNotes[i].available) {
+			activeNotes[i].start(note, velocity);
+			return;
+		}
 	}
-
-	activeNotes[nextAvailable].start(note, velocity);
 }
 
 static void init() {
