@@ -29,7 +29,6 @@ static void setSine(int8 *target) {
 	double radiansPerPhase = (2.0 * PI) / phases;
 
 	for (uint16 i = 0; i < phases; i++) {
-		// sine
 		float sineValue = sin(i * radiansPerPhase);
 		sineValue = sineValue * dHalfAmplitudes;
 
