@@ -21,11 +21,11 @@ static void setWavetable(uint8 value) {
 	}
 
 	if (value < 84) {
-		wavetable = Wavetable::currentLow;
+		wavetable = Wavetable::low;
 		return;
 	}
 
-	wavetable = Wavetable::currentHigh;
+	wavetable = Wavetable::high;
 }
 
 static void setFrequency(uint8 value) {

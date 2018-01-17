@@ -7,8 +7,9 @@
 class Wavetable {
 public:
 
-static int8 currentLow[phases];
-static int8 currentHigh[phases];
+static int8 low[phases];
+static int8 high[phases];
+
 static uint8 split;
 static uint8 halfAmplitudes;
 
@@ -16,8 +17,8 @@ static void init() {
 	double dHalfAmplitudes = amplitudes / 2;
 	halfAmplitudes = round(dHalfAmplitudes);
 
-	setSine(currentLow);
-	setSine(currentHigh);
+	setSine(low);
+	setSine(high);
 }
 
 static void setSine(int8 *target) {
@@ -30,15 +31,6 @@ static void setSine(int8 *target) {
 		sineValue = sineValue * dHalfAmplitudes;
 
 		target[i] = round(sineValue);
-	}
-}
-
-static void setSawtooth(int8 *target) {
-	double dHalfAmplitudes = amplitudes / 2.0;
-	double amplitudesPerPhase = (float)amplitudes / (float)phases;
-
-	for (uint16 i = 0; i < phases; i++) {
-		target[i] = round(i * amplitudesPerPhase - dHalfAmplitudes);
 	}
 }
 
@@ -69,23 +61,71 @@ static void setSquare(int8 *target) {
 	double halfPhases = phases / 2.0;
 
 	for (uint16 i = 0; i < phases; i++) {
-			target[i] = i < halfPhases ? 127 : -127;
+		target[i] = i < halfPhases ? 127 : -127;
 	}
 }
 
-static void setTable(uint8 value, int8 *target) {
+static void setSawtooth(int8 *target) {
+	double dHalfAmplitudes = amplitudes / 2.0;
+	double amplitudesPerPhase = (float)amplitudes / (float)phases;
+
+	for (uint16 i = 0; i < phases; i++) {
+		target[i] = round(i * amplitudesPerPhase - dHalfAmplitudes);
+	}
+}
+
+static uint8 low_wave_id;
+static uint8 high_wave_id;
+
+static bool isTableAlreadySet(uint8 table_id, uint8 wave_id) {
+	if (table_id == 0) {
+		if (low_wave_id == wave_id) {
+			return true;
+		} else {
+			low_wave_id = wave_id;
+			return false;
+		}
+	} else if (table_id == 1) {
+		if (high_wave_id == wave_id) {
+			return true;
+		} else {
+			high_wave_id = wave_id;
+			return false;
+		}
+	}
+
+	return false;
+}
+
+static void setTable(uint8 value, int8 *target, uint8 table_id) {
 	if (value < 32) {
+		if (isTableAlreadySet(table_id, 0)) {
+			return;
+		}
+
 		setSine(target);
 		return;
 	}
 
 	if (value < 64) {
+		if (isTableAlreadySet(table_id, 1)) {
+			return;
+		}
+
 		setTriangle(target);
 		return;
 	}
 
 	if (value < 96) {
+		if (isTableAlreadySet(table_id, 2)) {
+			return;
+		}
+
 		setSquare(target);
+		return;
+	}
+
+	if (isTableAlreadySet(table_id, 3)) {
 		return;
 	}
 
@@ -93,11 +133,11 @@ static void setTable(uint8 value, int8 *target) {
 }
 
 static void setLow(uint8 value) {
-	setTable(value, currentLow);
+	setTable(value, low, 0);
 }
 
 static void setHigh(uint8 value) {
-	setTable(value, currentHigh);
+	setTable(value, high, 1);
 }
 
 static void setSplit(uint8 value) {
@@ -105,10 +145,13 @@ static void setSplit(uint8 value) {
 }
 };
 
-int8 Wavetable::currentLow[phases];
-int8 Wavetable::currentHigh[phases];
+int8 Wavetable::low[phases];
+int8 Wavetable::high[phases];
 uint8 Wavetable::split = 0;
 
 uint8 Wavetable::halfAmplitudes;
+
+uint8 Wavetable::low_wave_id;
+uint8 Wavetable::high_wave_id;
 
 #endif

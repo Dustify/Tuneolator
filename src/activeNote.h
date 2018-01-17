@@ -93,7 +93,7 @@ int8 tick() {
 	}
 
 	uint16 phase = Notes::notes[note].tick();
-	amplitude = note < Wavetable::split ? Wavetable::currentLow[phase] : Wavetable::currentHigh[phase];
+	amplitude = note < Wavetable::split ? Wavetable::low[phase] : Wavetable::high[phase];
 
 	// TODO: add more envelopes!
 	switch (envelopePhase) {
