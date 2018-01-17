@@ -4,33 +4,28 @@
 #include <Arduino.h>
 #include "config.h"
 #include "frequencies.h"
+#include "fixed.h"
 
 class Note {
 public:
   uint16 ticks;
-  uint16 phasesPerTick;
   uint16 tickCount;
 
-  void init(float frequency) {
-    double fTicks = ticks_per_second / frequency;
-
-    ticks = round(fTicks);
-    phasesPerTick = round(phases / fTicks);
+  void init(double frequency) {
+    ticks = round(ticks_per_second / frequency);
   }
 
-  int16 tick() {
+  uint16 tick() {
     if (tickCount >= ticks) {
       tickCount = 0;
     }
 
-    int16 result = tickCount * phasesPerTick;
+    uint16 result = Fixed::factor(phases, tickCount, ticks);
 
     tickCount++;
 
     return result;
   }
-
-
 };
 
 #endif
