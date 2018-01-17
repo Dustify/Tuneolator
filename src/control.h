@@ -9,7 +9,7 @@
 
 class Control {
 public:
-	static uint8 compressionDivisor;
+static uint8 compressionDivisor;
 static ActiveNote activeNotes[polyphony];
 
 static void stopNote(uint8 note) {
@@ -29,23 +29,24 @@ static void playNote(uint8 note, uint8 velocity) {
 	int8 nextAvailable = -1;
 
 	for (uint8 i = 0; i < polyphony; i++) {
+		// re-use existing note if it matches
 		if (activeNotes[i].active && activeNotes[i].note == note) {
 			nextAvailable = i;
 			break;
 		}
 
+		// just find next inactive note
 		if (!activeNotes[i].active) {
 			nextAvailable = i;
 		}
 	}
 
-	if (nextAvailable > -1) {
-		activeNotes[nextAvailable].start(note, velocity);
+	// if there's nothing available, do nothing
+	if (nextAvailable == -1) {
+		return;
 	}
-}
 
-static void playNote(uint8 note) {
-	playNote(note, 127);
+	activeNotes[nextAvailable].start(note, velocity);
 }
 
 static void init() {
@@ -68,21 +69,19 @@ static void tick() {
 	int16 result = 0;
 
 	for (uint8 i = 0; i < polyphony; i++) {
-		if (activeNotes[i].active) {
-			result += activeNotes[i].tick();
-		}
+		result += activeNotes[i].tick();
 	}
 
 	// apply lfo
 	result += Lfo::tick();
 
-	// TODO: apply compression here
+	// 'compression'
 	result = result / compressionDivisor;
 
 	// shift output to positive
 	result += Wavetable::halfAmplitudes;
 
-	// hard clipping
+	// hard clipping, add indicator?
 	result = result > 255 ? 255 : result;
 	result = result < 0 ? 0 : result;
 
