@@ -62,7 +62,7 @@ uint32 envelopeCounter;
 uint8 envelopePhase; // 0 attack 1 decay 2 sustain 3 release
 
 void processAttack() {
-	if (envelopeCounter == attackTicks) {
+	if (envelopeCounter >= attackTicks) {
 		// we've finished attack, move to next envelope and reset counter
 		envelopePhase++;
 		envelopeCounter = 0;
@@ -75,7 +75,7 @@ void processAttack() {
 }
 
 void processRelease() {
-	if (envelopeCounter == releaseTicks) {
+	if (envelopeCounter >= releaseTicks) {
 		active = false;
 		return;
 	}
