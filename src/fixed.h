@@ -17,8 +17,18 @@ public:
     return result;
   }
 
-  // note / lfo
+  // note
   static uint16_t factor(uint16_t source, uint16_t numerator, uint16_t denominator) {
+    uint32_t numeratorScale = numerator * scale;
+    uint32_t factorScale = numeratorScale / denominator;
+    int32_t resultScale = source * factorScale;
+    uint16_t result = resultScale / scale;
+
+    return result;
+  }
+
+  // lfo
+  static uint16_t factor(uint16_t source, uint32_t numerator, uint32_t denominator) {
     uint32_t numeratorScale = numerator * scale;
     uint32_t factorScale = numeratorScale / denominator;
     int32_t resultScale = source * factorScale;

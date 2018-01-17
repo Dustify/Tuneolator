@@ -10,8 +10,8 @@
 class Lfo {
 public:
 static int8* wavetable;
-static uint16 tickCount;
-static uint16 ticks;
+static uint32 tickCount;
+static uint32 ticks;
 static uint8 factor;
 
 static void setWavetable(uint8 value) {
@@ -56,8 +56,8 @@ static int8 tick() {
 };
 
 int8* Lfo::wavetable;
-uint16 Lfo::tickCount;
-uint16 Lfo::ticks;
+uint32 Lfo::tickCount;
+uint32 Lfo::ticks;
 uint8 Lfo::factor;
 
 #endif
