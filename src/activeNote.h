@@ -96,10 +96,15 @@ void processDecay() {
 		return;
 	}
 
+	// uint8_t fullDecayDrop = 127 - sustainLevel;
+	// uint8_t decayDrop
+
+
 	envelopeCounter++;
 }
 
 void processSustain() {
+	amplitude = Fixed::factorVelocity(amplitude, sustainLevel, 127);
 }
 
 void processRelease() {

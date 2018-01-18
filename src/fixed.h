@@ -19,7 +19,7 @@ public:
     return result;
   }
 
-  // velocity
+  // velocity / sustain
   static int8_t factorVelocity(int8_t source, uint8_t numerator, uint8_t denominator) {
     uint32_t numeratorScale = numerator * scale;
     uint32_t factorScale = numeratorScale / denominator;
