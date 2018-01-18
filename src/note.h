@@ -8,19 +8,19 @@
 
 class Note {
 public:
-  uint16 ticks;
-  uint16 tickCount;
+  uint16_t ticks;
+  uint16_t tickCount;
 
   void init(double frequency) {
     ticks = round(ticks_per_second / frequency);
   }
 
-  uint16 tick() {
+  uint16_t tick() {
     if (tickCount >= ticks) {
       tickCount = 0;
     }
 
-    uint16 result = Fixed::factorNote(phases, tickCount, ticks);
+    uint16_t result = Fixed::factorNote(phases, tickCount, ticks);
 
     tickCount++;
 

@@ -9,11 +9,11 @@ public:
 
 static bool busy;
 
-static int8 low[phases];
-static int8 high[phases];
+static int8_t low[phases];
+static int8_t high[phases];
 
-static uint8 split;
-static uint8 halfAmplitudes;
+static uint8_t split;
+static uint8_t halfAmplitudes;
 
 static void init() {
 	double dHalfAmplitudes = amplitudes / 2;
@@ -23,12 +23,12 @@ static void init() {
 	setSine(high);
 }
 
-static void setSine(int8 *target) {
+static void setSine(int8_t *target) {
 	busy = true;
 	double dHalfAmplitudes = amplitudes / 2.0;
 	double radiansPerPhase = (2.0 * PI) / phases;
 
-	for (uint16 i = 0; i < phases; i++) {
+	for (uint16_t i = 0; i < phases; i++) {
 		float sineValue = sin(i * radiansPerPhase);
 		sineValue = sineValue * dHalfAmplitudes;
 
@@ -38,15 +38,15 @@ static void setSine(int8 *target) {
 	busy = false;
 }
 
-static void setTriangle(int8 *target) {
+static void setTriangle(int8_t *target) {
 	busy = true;
 	double amplitudesPerPhase = (float)amplitudes / (float)phases;
 	double quarterPhases = phases / 4.0;
 	double amplitudesPerHalfPhase = amplitudesPerPhase * 2.0;
 
-	for (uint16 i = 0; i < phases; i++) {
+	for (uint16_t i = 0; i < phases; i++) {
 		float triangleAmplitude = i * amplitudesPerHalfPhase;
-		uint8 quarterPhase = i / quarterPhases;
+		uint8_t quarterPhase = i / quarterPhases;
 
 		if (quarterPhase == 0) {
 			target[i] = round(triangleAmplitude);
@@ -64,33 +64,33 @@ static void setTriangle(int8 *target) {
 	busy = false;
 }
 
-static void setSquare(int8 *target) {
+static void setSquare(int8_t *target) {
 	busy = true;
 	double halfPhases = phases / 2.0;
 
-	for (uint16 i = 0; i < phases; i++) {
+	for (uint16_t i = 0; i < phases; i++) {
 		target[i] = i < halfPhases ? 127 : -127;
 	}
 
 	busy = false;
 }
 
-static void setSawtooth(int8 *target) {
+static void setSawtooth(int8_t *target) {
 	busy = true;
 	double dHalfAmplitudes = amplitudes / 2.0;
 	double amplitudesPerPhase = (float)amplitudes / (float)phases;
 
-	for (uint16 i = 0; i < phases; i++) {
+	for (uint16_t i = 0; i < phases; i++) {
 		target[i] = round(i * amplitudesPerPhase - dHalfAmplitudes);
 	}
 
 	busy = false;
 }
 
-static uint8 low_wave_id;
-static uint8 high_wave_id;
+static uint8_t low_wave_id;
+static uint8_t high_wave_id;
 
-static bool isTableAlreadySet(uint8 table_id, uint8 wave_id) {
+static bool isTableAlreadySet(uint8_t table_id, uint8_t wave_id) {
 	if (table_id == 0) {
 		if (low_wave_id == wave_id) {
 			return true;
@@ -110,7 +110,7 @@ static bool isTableAlreadySet(uint8 table_id, uint8 wave_id) {
 	return false;
 }
 
-static void setTable(uint8 value, int8 *target, uint8 table_id) {
+static void setTable(uint8_t value, int8_t *target, uint8_t table_id) {
 	if (value < 32) {
 		if (isTableAlreadySet(table_id, 0)) {
 			return;
@@ -145,27 +145,27 @@ static void setTable(uint8 value, int8 *target, uint8 table_id) {
 	setSawtooth(target);
 }
 
-static void setLow(uint8 value) {
+static void setLow(uint8_t value) {
 	setTable(value, low, 0);
 }
 
-static void setHigh(uint8 value) {
+static void setHigh(uint8_t value) {
 	setTable(value, high, 1);
 }
 
-static void setSplit(uint8 value) {
+static void setSplit(uint8_t value) {
 	split = value;
 }
 };
 
-int8 Wavetable::low[phases];
-int8 Wavetable::high[phases];
-uint8 Wavetable::split = 0;
+int8_t Wavetable::low[phases];
+int8_t Wavetable::high[phases];
+uint8_t Wavetable::split = 0;
 
-uint8 Wavetable::halfAmplitudes;
+uint8_t Wavetable::halfAmplitudes;
 
-uint8 Wavetable::low_wave_id;
-uint8 Wavetable::high_wave_id;
+uint8_t Wavetable::low_wave_id;
+uint8_t Wavetable::high_wave_id;
 
 bool Wavetable::busy;
 

@@ -11,12 +11,12 @@
 class ActiveNote {
 public:
 
-static uint32 attackTicks;
-static uint32 decayTicks;
-static uint8 sustainLevel;
-static uint32 releaseTicks;
+static uint32_t attackTicks;
+static uint32_t decayTicks;
+static uint8_t sustainLevel;
+static uint32_t releaseTicks;
 
-static uint32 getEnvelopeTicks(uint8 value, uint16 maxMilliseconds) {
+static uint32_t getEnvelopeTicks(uint8_t value, uint16_t maxMilliseconds) {
 	if (value == 0) {
 		return 0;
 	}
@@ -27,26 +27,26 @@ static uint32 getEnvelopeTicks(uint8 value, uint16 maxMilliseconds) {
 	return round((ms * ticks_per_second) / 1000.0);
 }
 
-static void setAttack(uint8 value) {
+static void setAttack(uint8_t value) {
 	attackTicks = getEnvelopeTicks(value, maxAttackMilliseconds);
 }
 
-static void setDecay(uint8 value) {
+static void setDecay(uint8_t value) {
 	decayTicks = getEnvelopeTicks(value, maxDecayMilliseconds);
 }
 
-static void setSustain(uint8 value) {
+static void setSustain(uint8_t value) {
 	sustainLevel = value;
 }
 
-static void setRelease(uint8 value) {
+static void setRelease(uint8_t value) {
 	releaseTicks = getEnvelopeTicks(value, maxReleaseMilliseconds);
 }
 
 bool active;
 bool available;
-uint8 note;
-uint8 velocity;
+uint8_t note;
+uint8_t velocity;
 
 void init() {
 	active = false;
@@ -54,7 +54,7 @@ void init() {
 }
 
 // TODO: start note at same amplitude as last one
-void start(uint8 note, uint8 velocity) {
+void start(uint8_t note, uint8_t velocity) {
 	Led::indicate();
 	ActiveNote::note = note;
 	ActiveNote::velocity = velocity;
@@ -72,9 +72,9 @@ void stop() {
 	available = true;
 }
 
-int8 amplitude;
-uint32 envelopeCounter;
-uint8 envelopePhase; // 0 attack 1 decay 2 sustain 3 release
+int8_t amplitude;
+uint32_t envelopeCounter;
+uint8_t envelopePhase; // 0 attack 1 decay 2 sustain 3 release
 
 void processAttack() {
 	if (envelopeCounter >= attackTicks) {
@@ -113,12 +113,12 @@ void processRelease() {
 	envelopeCounter++;
 }
 
-int8 tick() {
+int8_t tick() {
 	if (!active || Wavetable::busy) {
 		return 0;
 	}
 
-	uint16 phase = Notes::notes[note].tick();
+	uint16_t phase = Notes::notes[note].tick();
 	amplitude = note < Wavetable::split ? Wavetable::low[phase] : Wavetable::high[phase];
 
 	// TODO: add more envelopes!
@@ -133,9 +133,9 @@ int8 tick() {
 }
 };
 
-uint32 ActiveNote::attackTicks;
-uint32 ActiveNote::decayTicks;
-uint8 ActiveNote::sustainLevel;
-uint32 ActiveNote::releaseTicks;
+uint32_t ActiveNote::attackTicks;
+uint32_t ActiveNote::decayTicks;
+uint8_t ActiveNote::sustainLevel;
+uint32_t ActiveNote::releaseTicks;
 
 #endif

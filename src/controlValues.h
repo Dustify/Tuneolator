@@ -9,7 +9,7 @@
 class ControlValues {
 public:
 
-static void set(uint8 id, uint8 value) {
+static void set(uint8_t id, uint8_t value) {
 	// set attack
 	if (id == controlAttack) {
 		ActiveNote::setAttack(value);

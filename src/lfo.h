@@ -10,10 +10,10 @@
 
 class Lfo {
 public:
-static int8* wavetable;
-static uint32 tickCount;
-static uint32 ticks;
-static uint8 factor;
+static int8_t* wavetable;
+static uint32_t tickCount;
+static uint32_t ticks;
+static uint8_t factor;
 
 static bool active() {
 	return
@@ -22,7 +22,7 @@ static bool active() {
 	    factor > 0;
 }
 
-static void setWavetable(uint8 value) {
+static void setWavetable(uint8_t value) {
 	if (value < 42) {
 		wavetable = NULL;
 		return;
@@ -36,7 +36,7 @@ static void setWavetable(uint8 value) {
 	wavetable = Wavetable::high;
 }
 
-static void setFrequency(uint8 value) {
+static void setFrequency(uint8_t value) {
 	if (value == 0) {
 		ticks = 0;
 		return;
@@ -46,11 +46,11 @@ static void setFrequency(uint8 value) {
 	ticks = round(ticks_per_second / frequency);
 }
 
-static void setFactor(uint8 value) {
+static void setFactor(uint8_t value) {
 	factor = value;    // / 127.0;
 }
 
-static int8 tick() {
+static int8_t tick() {
 	if (wavetable == NULL) {
 		return 0;
 	}
@@ -59,8 +59,8 @@ static int8 tick() {
 		tickCount = 0;
 	}
 
-	uint16 phase = Fixed::factorLfo(phases, tickCount, ticks);
-	int8 result = Fixed::factorLfoVolume(wavetable[phase], factor, midiMaxValue);
+	uint16_t phase = Fixed::factorLfo(phases, tickCount, ticks);
+	int8_t result = Fixed::factorLfoVolume(wavetable[phase], factor, midiMaxValue);
 
 	tickCount++;
 
@@ -68,9 +68,9 @@ static int8 tick() {
 }
 };
 
-int8* Lfo::wavetable;
-uint32 Lfo::tickCount;
-uint32 Lfo::ticks;
-uint8 Lfo::factor;
+int8_t* Lfo::wavetable;
+uint32_t Lfo::tickCount;
+uint32_t Lfo::ticks;
+uint8_t Lfo::factor;
 
 #endif

@@ -18,14 +18,14 @@ static void init() {
 	Serial.begin(31250);
 }
 
-static uint8 message[3];
-static uint8 position;
+static uint8_t message[3];
+static uint8_t position;
 
 static void processMessage() {
-	uint8 type = (message[0] & 0b01110000) >> 4;
-	uint8 channel = message[0] & 0b00001111;
-	uint8 note = message[1] & 0b01111111;
-	uint8 velocity = message[2] & 0b01111111;
+	uint8_t type = (message[0] & 0b01110000) >> 4;
+	uint8_t channel = message[0] & 0b00001111;
+	uint8_t note = message[1] & 0b01111111;
+	uint8_t velocity = message[2] & 0b01111111;
 
 	if (channel == midiChannel) {
 		// note off
@@ -49,7 +49,7 @@ static void processMessage() {
 }
 
 static void read() {
-	uint8 value = Serial.read();
+	uint8_t value = Serial.read();
 
 	Serial.println(value);
 
@@ -84,7 +84,7 @@ static void process() {
 }
 };
 
-uint8 Midi::message[3];
-uint8 Midi::position;
+uint8_t Midi::message[3];
+uint8_t Midi::position;
 
 #endif

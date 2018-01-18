@@ -9,31 +9,31 @@
 
 class Control {
 public:
-static uint8 volume;
+static uint8_t volume;
 static ActiveNote activeNotes[polyphony];
 
-static void stopNote(uint8 note) {
-	for (uint8 i = 0; i < polyphony; i++) {
+static void stopNote(uint8_t note) {
+	for (uint8_t i = 0; i < polyphony; i++) {
 		if (activeNotes[i].active && activeNotes[i].note == note) {
 			activeNotes[i].stop();
 		}
 	}
 }
 
-static void playNote(uint8 note, uint8 velocity) {
+static void playNote(uint8_t note, uint8_t velocity) {
 	if (velocity == 0) {
 		stopNote(note);
 		return;
 	}
 
-	uint8 actualPolyphony = polyphony;
+	uint8_t actualPolyphony = polyphony;
 
 	// remove one note if LFO is active
 	if (Lfo::active()) {
 		actualPolyphony--;
 	}
 
-	for (uint8 i = 0; i < actualPolyphony; i++) {
+	for (uint8_t i = 0; i < actualPolyphony; i++) {
 		// re-use note if already set
 		if (activeNotes[i].note == note) {
 			activeNotes[i].start(note, velocity);
@@ -41,7 +41,7 @@ static void playNote(uint8 note, uint8 velocity) {
 		}
 	}
 
-	for (uint8 i = 0; i < actualPolyphony; i++) {
+	for (uint8_t i = 0; i < actualPolyphony; i++) {
 		// find an inactive note
 		if (!activeNotes[i].active) {
 			activeNotes[i].start(note, velocity);
@@ -49,7 +49,7 @@ static void playNote(uint8 note, uint8 velocity) {
 		}
 	}
 
-	for (uint8 i = 0; i < actualPolyphony; i++) {
+	for (uint8_t i = 0; i < actualPolyphony; i++) {
 		// if we've got this far, all notes are active
 		// find one in release (available)
 		if (activeNotes[i].available) {
@@ -63,7 +63,7 @@ static void init() {
 	// TODO: configurable
 	GPIOA->regs->CRL = 0x33333333;
 
-	for (uint8 i = 0; i < polyphony; i++) {
+	for (uint8_t i = 0; i < polyphony; i++) {
 		activeNotes[i].init();
 	}
 
@@ -71,14 +71,14 @@ static void init() {
 	Wavetable::init();
 }
 
-static void setVolume(uint8 value) {
+static void setVolume(uint8_t value) {
 	volume = value;
 }
 
 static void tick() {
-	int16 result = 0;
+	int16_t result = 0;
 
-	for (uint8 i = 0; i < polyphony; i++) {
+	for (uint8_t i = 0; i < polyphony; i++) {
 		result += activeNotes[i].tick();
 	}
 
@@ -100,6 +100,6 @@ static void tick() {
 };
 
 ActiveNote Control::activeNotes[polyphony];
-uint8 Control::volume = 64;
+uint8_t Control::volume = 64;
 
 #endif

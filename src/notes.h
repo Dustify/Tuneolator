@@ -9,7 +9,7 @@ private:
 public:
   static Note notes[128];
   static void init() {
-    for(uint8 i = 0; i < 128; i++) {
+    for(uint8_t i = 0; i < 128; i++) {
       notes[i].init(frequencies[i]);
     }
   }

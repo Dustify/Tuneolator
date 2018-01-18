@@ -3,35 +3,35 @@
 
 #include <Arduino.h>
 
-const uint32 ticks_per_second = 48e3;
-const uint16 phases = 7256;
+const uint32_t ticks_per_second = 48e3;
+const uint16_t phases = 7256;
 
 const float maxLfoFrequency = 20;
 
-const uint16 maxAttackMilliseconds = 2000;
-const uint16 maxDecayMilliseconds = 2000;
-const uint16 maxReleaseMilliseconds = 5000;
+const uint16_t maxAttackMilliseconds = 2000;
+const uint16_t maxDecayMilliseconds = 2000;
+const uint16_t maxReleaseMilliseconds = 5000;
 
-const uint8 midiChannel = 0;
+const uint8_t midiChannel = 0;
 
-const uint8 controlAttack = 14;
-const uint8 controlDecay = 15;
-const uint8 controlSustain = 16;
-const uint8 controlRelease = 17;
+const uint8_t controlAttack = 14;
+const uint8_t controlDecay = 15;
+const uint8_t controlSustain = 16;
+const uint8_t controlRelease = 17;
 
-const uint8 controlLfoWavetable = 12;
-const uint8 controlLfoFrequency = 95;
-const uint8 controlLfoFactor = 102;
+const uint8_t controlLfoWavetable = 12;
+const uint8_t controlLfoFrequency = 95;
+const uint8_t controlLfoFactor = 102;
 
-const uint8 controlLowWavetable = 18;
-const uint8 controlSplit = 73;
-const uint8 controlHighWavetable = 72;
+const uint8_t controlLowWavetable = 18;
+const uint8_t controlSplit = 73;
+const uint8_t controlHighWavetable = 72;
 
-const uint8 controlVolume = 74;
+const uint8_t controlVolume = 74;
 
 // actual constants, not really configurable
-const uint8 polyphony = 9;
-const uint8 amplitudes = 254;
-const uint8 midiMaxValue = 127;
+const uint8_t polyphony = 9;
+const uint8_t amplitudes = 254;
+const uint8_t midiMaxValue = 127;
 
 #endif
