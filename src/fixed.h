@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+// TODO: sort overuse of 32-bit values
+
 class Fixed {
 public:
   static int32 scale;
