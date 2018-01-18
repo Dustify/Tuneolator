@@ -96,13 +96,10 @@ void processDecay() {
 		return;
 	}
 
-	//amplitude = amplitude - Fixed::factorEnvelope(amplitude, envelopeCounter, releaseTicks);
-
 	envelopeCounter++;
 }
 
 void processSustain() {
-
 }
 
 void processRelease() {
