@@ -19,7 +19,7 @@ public:
     return result;
   }
 
-  // velocity / sustain
+  // velocity / decay / sustain
   static int8_t factorVelocity(int8_t source, uint8_t numerator, uint8_t denominator) {
     uint32_t numeratorScale = numerator * scale;
     uint32_t factorScale = numeratorScale / denominator;
@@ -61,6 +61,16 @@ public:
 
   // lfo volume
   static int8_t factorLfoVolume(int8_t source, uint32_t numerator, uint32_t denominator) {
+    uint32_t numeratorScale = numerator * scale;
+    uint32_t factorScale = numeratorScale / denominator;
+    int32_t resultScale = source * factorScale;
+    int8_t result = resultScale / scale;
+
+    return result;
+  }
+
+  // decay drop
+  static int8_t factorDecayDrop(uint8_t source, uint32_t numerator, uint32_t denominator) {
     uint32_t numeratorScale = numerator * scale;
     uint32_t factorScale = numeratorScale / denominator;
     int32_t resultScale = source * factorScale;

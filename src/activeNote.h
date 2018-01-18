@@ -66,7 +66,6 @@ void start(uint8_t note, uint8_t velocity) {
 }
 
 void stop() {
-	// TODO: release needs to pick up from current position (i.e. pay attention to where attack / decay / sustain is)!
 	envelopeCounter = 0;
 	envelopePhase = 3;
 	available = true;
@@ -75,6 +74,10 @@ void stop() {
 int8_t amplitude;
 uint32_t envelopeCounter;
 uint8_t envelopePhase; // 0 attack 1 decay 2 sustain 3 release
+
+// store last used factor values for release
+uint32_t envelopeNumerator;
+uint32_t envelopeDenominator;
 
 void processAttack() {
 	if (envelopeCounter >= attackTicks) {
@@ -85,6 +88,8 @@ void processAttack() {
 	}
 
 	amplitude = Fixed::factorEnvelope(amplitude, envelopeCounter, attackTicks);
+	envelopeNumerator = envelopeCounter;
+	envelopeDenominator = attackTicks;
 
 	envelopeCounter++;
 }
@@ -96,15 +101,21 @@ void processDecay() {
 		return;
 	}
 
-	// uint8_t fullDecayDrop = 127 - sustainLevel;
-	// uint8_t decayDrop
+	uint8_t fullDecayDrop = 127 - sustainLevel;
+	uint8_t decayDrop = 127 - Fixed::factorDecayDrop(fullDecayDrop, envelopeCounter, decayTicks);
+	amplitude = Fixed::factorVelocity(amplitude, decayDrop, 127);
 
+	envelopeNumerator = decayDrop;
+	envelopeDenominator = 127;
 
 	envelopeCounter++;
 }
 
 void processSustain() {
 	amplitude = Fixed::factorVelocity(amplitude, sustainLevel, 127);
+
+	envelopeNumerator = sustainLevel;
+	envelopeDenominator = 127;
 }
 
 void processRelease() {
@@ -113,6 +124,7 @@ void processRelease() {
 		return;
 	}
 
+	amplitude = Fixed::factorEnvelope(amplitude, envelopeNumerator, envelopeDenominator);
 	amplitude = amplitude - Fixed::factorEnvelope(amplitude, envelopeCounter, releaseTicks);
 
 	envelopeCounter++;
@@ -140,7 +152,7 @@ int8_t tick() {
 
 uint32_t ActiveNote::attackTicks;
 uint32_t ActiveNote::decayTicks;
-uint8_t ActiveNote::sustainLevel;
+uint8_t ActiveNote::sustainLevel = 127;
 uint32_t ActiveNote::releaseTicks;
 
 #endif
