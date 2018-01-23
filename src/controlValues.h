@@ -16,6 +16,7 @@ static void set(uint8_t id, uint8_t value) {
 		return;
 	}
 
+	#ifdef ENABLE_DECAY_SUSTAIN
 	// set decay
 	if (id == controlDecay) {
 		ActiveNote::setDecay(value);
@@ -27,6 +28,7 @@ static void set(uint8_t id, uint8_t value) {
 		ActiveNote::setSustain(value);
 		return;
 	}
+	#endif
 
 	// set release
 	if (id == controlRelease) {

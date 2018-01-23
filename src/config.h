@@ -3,7 +3,10 @@
 
 #include <Arduino.h>
 
-const uint32_t ticks_per_second = 48e3;
+// #define ENABLE_ENV_SMOOTH
+// #define ENABLE_DECAY_SUSTAIN
+
+const uint32_t ticks_per_second = 50e3;
 const uint16_t phases = 7400;
 
 const float maxLfoFrequency = 20;
@@ -15,8 +18,12 @@ const uint16_t maxReleaseMilliseconds = 5000;
 const uint8_t midiChannel = 0;
 
 const uint8_t controlAttack = 14;
+
+#ifdef ENABLE_DECAY_SUSTAIN
 const uint8_t controlDecay = 15;
 const uint8_t controlSustain = 16;
+#endif
+
 const uint8_t controlRelease = 17;
 
 const uint8_t controlLfoWavetable = 12;
