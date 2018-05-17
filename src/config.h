@@ -3,19 +3,21 @@
 
 #include <Arduino.h>
 
-// #define ENABLE_ENV_SMOOTH
-// #define ENABLE_DECAY_SUSTAIN
+#define ENABLE_ENV_SMOOTH
+#define ENABLE_DECAY_SUSTAIN
 
-const uint32_t ticks_per_second = 50e3;
-const uint16_t phases = 7400;
+HardwareSerial &MidiSerial = Serial1;
 
-const float maxLfoFrequency = 20;
+const double ticks_per_second = 50e3;
+const uint16_t phases = 8.1e3;
 
-const uint16_t maxAttackMilliseconds = 2000;
-const uint16_t maxDecayMilliseconds = 2000;
-const uint16_t maxReleaseMilliseconds = 5000;
+const float maxLfoFrequency = 10;
 
-const uint8_t midiChannel = 0;
+const uint16_t maxAttackMilliseconds = 1000;
+const uint16_t maxDecayMilliseconds = 1000;
+const uint16_t maxReleaseMilliseconds = 1500;
+
+const uint8_t midiChannel = 2;
 
 const uint8_t controlAttack = 14;
 

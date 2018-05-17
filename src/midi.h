@@ -15,7 +15,7 @@ static void init() {
 	gpio_set_mode(GPIOB, 6, GPIO_AF_OUTPUT_PP);
 	gpio_set_mode(GPIOB, 7, GPIO_INPUT_FLOATING);
 
-	Serial.begin(31250);
+	MidiSerial.begin(31250);
 }
 
 static uint8_t message[3];
@@ -49,9 +49,9 @@ static void processMessage() {
 }
 
 static void read() {
-	uint8_t value = Serial.read();
+	uint8_t value = Serial1.read();
 
-	Serial.println(value);
+	MidiSerial.println(value);
 
 	// first byte
 	if (value > 127) {
@@ -78,7 +78,7 @@ static void read() {
 }
 
 static void process() {
-	while (Serial.available()) {
+	while (MidiSerial.available()) {
 		read();
 	}
 }

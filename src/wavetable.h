@@ -81,7 +81,7 @@ static void setSawtooth(int8_t *target) {
 	double amplitudesPerPhase = (float)amplitudes / (float)phases;
 
 	for (uint16_t i = 0; i < phases; i++) {
-		target[i] = round(i * amplitudesPerPhase - dHalfAmplitudes);
+		target[i] = round((double)i * amplitudesPerPhase - dHalfAmplitudes);
 	}
 
 	busy = false;
